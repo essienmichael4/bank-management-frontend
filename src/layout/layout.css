@@ -1,4 +1,13 @@
 main{
     width: calc(100% - 220px);
     margin-left: 220px;
+    /* max-width: 1880px; */
+}
+
+a.active:hover, a.active{
+    @apply bg-blue-300
+}
+
+a.active > span > img, a.active > p{
+    filter: invert();
 }
