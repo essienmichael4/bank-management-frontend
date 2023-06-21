@@ -1,0 +1,55 @@
+main{
+    /* width: calc(100% - 220px);
+    margin-left: 220px; */
+    transition: all .5s ease-in-out;
+    @apply w-full lg:w-[calc(100%-220px)] lg:ml-[220px]
+    /* max-width: 1880px; */
+}
+
+main.active{
+    /* margin-left: 4.6rem; */
+    @apply w-full lg:w-[calc(100%-4.6rem)] lg:ml-[4.6rem]
+}
+
+a.active:hover, a.active{
+    @apply lg:bg-blue-300 lg:font-bold
+    
+}
+
+a.active > img, a.active > span{
+    /* filter: invert(); */
+    @apply lg:invert
+}
+
+aside{
+    transition: all .5s ease-in-out;
+    @apply absolute top-[-100%] bottom-[100%]
+}
+
+aside.active{
+    @apply flex flex-col items-center z-20 w-full top-0 right-0 bg-white lg:z-0 lg:block lg:w-[4.6rem]
+}
+
+aside.active > nav{
+    @apply w-full px-8 lg:px-0
+}
+
+aside.active > nav > ul {
+    @apply gap-0 lg:gap-2
+}
+
+aside.active > nav > ul > li{
+    @apply flex items-center w-full justify-center border-t border-gray-300 lg:border-0 lg:block
+}
+
+aside.active > nav > ul > li > a {
+    @apply font-bold my-2 lg:font-light hover:bg-white lg:hover:bg-gray-100 lg:my-0
+}
+
+aside.active > nav > ul > li > a > img{
+    @apply hidden lg:inline-block
+}
+
+.arrow.active{
+    transform: rotate(180deg);
+}
