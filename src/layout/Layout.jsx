@@ -52,19 +52,19 @@ function Layout() {
             </nav>
         </aside>
         <main className={`${isToggled && 'active'}`}>
-            <header className='sticky top-0 shadow mb-2'>
-                <div className='hidden lg:flex items-center justify-center absolute w-6 h-6 left-[-.8rem] top-6 z-2 bg-white p border border-gray-300 rounded-full' onClick={toggleMenu}>
+            <header className='sticky top-0 bg-white shadow  z-10'>
+                <div className='hidden cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[-.8rem] top-6 z-2 bg-white p border border-gray-300 rounded-full' onClick={toggleMenu}>
                     <img src={arrow} className={`${!isToggled && 'active'} w-4 h-4 arrow`} alt="" />
                 </div>
                 <div className='w-full max-w-[1880px] mx-auto flex justify-between items-center py-4 px-2 md:px-4'>
                     
                     <img src={menu} className='w-6 h-6 lg:hidden mr-2' alt="" onClick={toggleMenu} />
                     
-                    <div className='hidden md:block'>
-                        <h2 className='text-2xl font-bold'>
+                    <div className='hidden md:flex md:flex-col md:gap-0'>
+                        <h2 className='text-2xl font-bold m-0'>
                             {path}
                         </h2>
-                        <p className='text-xs'>
+                        <p className='text-xs m-0'>
                             {date}
                         </p>
                     </div>
@@ -75,15 +75,15 @@ function Layout() {
                             <button className='bg-gray-300 text-sm rounded py-1 px-1 md:px-2 font-semibold md:text-base'>Search</button>
                         </form>
                         <div className='hidden md:block'>
-                            <h3 className='font-bold'>Michael Essien</h3>
-                            <p className='text-sm text-gray-400'>Admin</p>
+                            <h3 className='font-bold m-0'>Michael Essien</h3>
+                            <p className='text-sm text-gray-400 m-0'>Admin</p>
                         </div>
-                        <div className='w-8 h-8 rounded-full bg-black'></div>
+                        <div className='w-8 h-8 md:w-12 md:h-12 rounded-full bg-black'></div>
                     </div>
                 </div>
             </header>
             <section>
-                <div className='w-full max-w-[1880px] mx-auto flex justify-between items-center py-4 px-4'>
+                <div className='w-full max-w-[1880px] mx-auto z-0 py-0 px-4'>
                     <Outlet />
                 </div>
             </section>

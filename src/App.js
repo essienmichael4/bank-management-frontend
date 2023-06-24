@@ -7,9 +7,12 @@ import Loan from "./pages/loans/Loan";
 import Transactions from "./pages/transactions/Transactions";
 import Users from "./pages/users/Users";
 
+// import { DatePicker } from 'antd';
+
 function App() {
   return (
     <div className="App text-black">
+
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="bms" element={<Layout/>} >
