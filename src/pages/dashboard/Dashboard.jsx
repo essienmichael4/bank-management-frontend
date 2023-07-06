@@ -31,7 +31,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className='flex mb-4 py-4'>
+      <div className='flex my-4 py-4'>
         <h3 className='lg:hidden'>Dashboard </h3>
         <h4 className='font-bold'> Your Overview</h4>
       </div>

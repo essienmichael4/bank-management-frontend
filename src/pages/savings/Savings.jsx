@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom'
 import Overview from '../../components/overview/Overview'
 import refresh from './refresh.svg'
 import search from './search.svg'
+import close from './close.svg'
 
 function Savings() {
   const [showTransaction, setShowTransaction] = useState(false)
@@ -10,9 +11,12 @@ function Savings() {
     setShowTransaction(!showTransaction)
   }
   return (
-    <div className='flex relative gap-4'>
-      <div className={`${showTransaction && 'hidden'} w-[450px] transition border-r border-gray-200 py-4 pr-4`}>
+    <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
+      <div className={`${showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative md:border-r md:border-gray-200 py-4 md:pr-4`}>
         <h4>Make Transaction</h4>
+        <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-2'>
+          <img className='w-6 h-6 ' src={close} alt="" />
+        </button>
         <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
         <form className='mt-4 flex flex-col gap-4'>
           <h5>Account Details</h5>
@@ -47,18 +51,18 @@ function Savings() {
           <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
         </form>
       </div>
-      <div className='py-4 transition'>
+      <div className='py-4 transition w-full'>
         <div className='flex justify-between items-center border-b border-gray-100 pb-4'>
-          <div className='flex gap-8'>
+          <div className='flex items-center gap-8'>
             <h4 className='m-0 font-bold '>Savings Account</h4>
 
-            <div className='flex items-center gap-2'>
-              <button onClick={handleShowTransaction}>Deposite</button>
-              <button>Debit</button>
+            <div className='flex items-center gap-2 '>
+              <button className='bg-green-500 text-sm lg:text-light text-white p-2 rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
+              {/* <button>Debit</button> */}
             </div>
           </div>
 
-          <NavLink to="../dashboard">Add Account</NavLink>
+          <NavLink className='text-blue-500 p-2 border text-sm border-blue-500 rounded-lg lg:text-light' to="../dashboard">Add Account</NavLink>
         </div>
         <><Overview/></>
         <div className='w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>

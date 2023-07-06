@@ -53,10 +53,10 @@ function Layout() {
         </aside>
         <main className={`${isToggled && 'active'}`}>
             <header className='sticky top-0 bg-white shadow  z-10'>
-                <div className='hidden cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[-.8rem] top-6 z-2 bg-white p border border-gray-300 rounded-full' onClick={toggleMenu}>
+                <div className='hidden cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[-.8rem] top-4 2xl:top-6 z-2 bg-white p border border-gray-300 rounded-full' onClick={toggleMenu}>
                     <img src={arrow} className={`${!isToggled && 'active'} w-4 h-4 arrow`} alt="" />
                 </div>
-                <div className='w-full max-w-[1880px] mx-auto flex justify-between items-center py-4 px-2 md:px-4'>
+                <div className='w-full max-w-[1880px] mx-auto flex justify-between items-center py-2 2xl:py-4 px-2 md:px-4'>
                     
                     <img src={menu} className='w-6 h-6 lg:hidden mr-2' alt="" onClick={toggleMenu} />
                     
@@ -70,15 +70,15 @@ function Layout() {
                     </div>
 
                     <div className='flex gap-2 lg:gap-4 items-center'>
-                        <form className='flex gap-1 md:gap-2 py-1 md:py-2 pl-1 md:pl-4 pr-1 md:pr-2 border border-gray-300 rounded-lg '>
-                            <input type="text" className='max-w-xl text-small min-w-[100px] outline-0 md:text-base' placeholder='Search for account'/>
-                            <button className='bg-gray-300 text-sm rounded py-1 px-1 md:px-2 font-semibold md:text-base'>Search</button>
+                        <form className='flex gap-1 md:gap-2 py-1 md:py-1 2xl:py-2 pl-1 md:pl-4 pr-1 2xl:pr-2 border border-gray-300 rounded-lg '>
+                            <input type="text" className='max-w-xl flex-1 text-xs min-w-[100px] outline-0 md:text-base' placeholder='Search for account'/>
+                            <button className='bg-gray-300 text-xs rounded py-1 px-1 md:px-2 font-semibold md:text-base'>Search</button>
                         </form>
                         <div className='hidden md:block'>
                             <h3 className='font-bold m-0'>Michael Essien</h3>
                             <p className='text-sm text-gray-400 m-0'>Admin</p>
                         </div>
-                        <div className='w-8 h-8 md:w-12 md:h-12 rounded-full bg-black'></div>
+                        <div className='w-8 h-8 md:w-10 md:h-10 2xl:w-12 2xl:h-12 rounded-full bg-black'></div>
                     </div>
                 </div>
             </header>
