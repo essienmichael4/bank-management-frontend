@@ -12,7 +12,7 @@ function Savings() {
   }
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
-      <div className={`${showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative md:border-r md:border-gray-200 py-4 md:pr-4`}>
+      <div className={`${!showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative py-4`}>
         <h4>Make Transaction</h4>
         <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-2'>
           <img className='w-6 h-6 ' src={close} alt="" />
@@ -51,18 +51,18 @@ function Savings() {
           <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
         </form>
       </div>
-      <div className='py-4 transition w-full'>
+      <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
         <div className='flex justify-between items-center border-b border-gray-100 pb-4'>
           <div className='flex items-center gap-8'>
             <h4 className='m-0 font-bold '>Savings Account</h4>
 
             <div className='flex items-center gap-2 '>
-              <button className='bg-green-500 text-sm lg:text-light text-white p-2 rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
+              <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
               {/* <button>Debit</button> */}
             </div>
           </div>
 
-          <NavLink className='text-blue-500 p-2 border text-sm border-blue-500 rounded-lg lg:text-light' to="../dashboard">Add Account</NavLink>
+          <NavLink className='text-blue-500 p-1 border text-sm border-blue-500 rounded lg:text-light 2xl:p-2 2xl:rounded-lg' to="../dashboard">Add Account</NavLink>
         </div>
         <><Overview/></>
         <div className='w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
@@ -72,7 +72,7 @@ function Savings() {
             </div>
             <div className='flex items-center gap-2'>
               <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'><span className='h-6 w-6'><img src={search} className='' alt="" /></span><input type="text" className='outline-0' placeholder='Search account'/></div>
-              <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
+              <div className='flex bg-gray-200 p-1 rounded-lg'>
                 <button className='active filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
                 <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Active</button>
                 <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Inactive</button>

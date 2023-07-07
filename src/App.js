@@ -6,6 +6,8 @@ import Savings from "./pages/savings/Savings";
 import Loan from "./pages/loans/Loan";
 import Transactions from "./pages/transactions/Transactions";
 import Users from "./pages/users/Users";
+import SavingsAccount from "./pages/savingsaccount/SavingsAccount";
+import LoansAccount from "./pages/loansaccount/LoansAccount";
 
 // import { DatePicker } from 'antd';
 
@@ -18,7 +20,9 @@ function App() {
         <Route path="bms" element={<Layout/>} >
           <Route path="dashboard" element={<Dashboard/>} />
           <Route path="savings" element={<Savings />} />
+          <Route path="savings/:id" element={<SavingsAccount />} />
           <Route path="loans" element={<Loan />} />
+          <Route path="loans/:id" element={<LoansAccount />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="users" element={<Users />} />
         </Route>

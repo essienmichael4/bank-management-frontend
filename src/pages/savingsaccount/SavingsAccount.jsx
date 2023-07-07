@@ -1,19 +1,24 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+import './savingsaccount.css'
 import { NavLink } from 'react-router-dom'
 import Overview from '../../components/overview/Overview'
 import refresh from './refresh.svg'
 import search from './search.svg'
 import close from './close.svg'
+import arrow from './arrow.svg'
 
-function Transactions() {
-  const [showTransaction, setShowTransaction] = useState(false)
-  function handleShowTransaction(){
-    setShowTransaction(!showTransaction)
-  }
-
+const SavingsAccount = () => {
+    const [showTransaction, setShowTransaction] = useState(false)
+    const [isToggled, setIsToggled] = useState(false)
+    function handleShowTransaction(){
+        setShowTransaction(!showTransaction)
+    }
+    function toggleDetails(){
+        setIsToggled(!isToggled)
+    }
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
-      <div className={`${!showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative py-4`}>
+      <div className={`${!showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative md:border-r md:border-gray-200 py-4 md:pr-4`}>
         <h4>Make Transaction</h4>
         <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-2'>
           <img className='w-6 h-6 ' src={close} alt="" />
@@ -52,38 +57,176 @@ function Transactions() {
           <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
         </form>
       </div>
-      <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
+      <div className='py-4 transition w-full'>
         <div className='flex justify-between items-center border-b border-gray-100 pb-4'>
           <div className='flex items-center gap-8'>
-            <h4 className='m-0 font-bold '>Transactions</h4>
+            <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
+                <img src={refresh} alt="" className='w-8 h-8'/>
+              </button>
+            <h4 className='m-0 font-bold '>Savings Account</h4>
 
             <div className='flex items-center gap-2 '>
-              <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
+              <button className='bg-green-500 text-sm lg:text-light text-white p-2 rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
               {/* <button>Debit</button> */}
             </div>
           </div>
-
-          <NavLink className='text-blue-500 p-1 border text-sm border-blue-500 rounded lg:text-light 2xl:p-2 2xl:rounded-lg' to="../dashboard">Add Account</NavLink>
         </div>
         <><Overview/></>
+        <div className='my-4 border border-gray-300 rounded-lg h-full relative'>
+            <div className='w-full h-24 bg-gray-200 rounded-lg'></div>
+            <div className='pt-8 px-4'>
+                <div className='absolute w-28 h-28 rounded-full bg-white border border-gray-200 top-2 left-4'></div>
+                <h3>Michael Essien Amodu</h3>
+                <div className='flex flex-wrap gap-8'>
+                    <div>
+                        <span className='text-xs text-gray-300'>Account Number</span>
+                        <p>1071010148099</p>
+                    </div>
+                    <div>
+                        <span className='text-xs text-gray-300'>Email</span>
+                        <p>essienmichael4@gamil.com</p>
+                    </div>
+                    <div>
+                        <span className='text-xs text-gray-300'>Phone</span>
+                        <p>0209241336</p>
+                    </div>
+                </div>
+                <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
+                    <h4 className='font-bold'>Other Personal Details</h4>
+                    <div className='flex gap-8 flex-wrap'>
+                        <div>
+                            <span className='text-xs text-gray-300'>Date of Birth</span>
+                            <p>Thu Jun 06 1993</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300'>Gender</span>
+                            <p>Male</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300'>Account Status</span>
+                            <p>Active</p>
+                        </div>
+                    </div>
+                </div>
+                <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
+                    <h4 className='font-bold'>Address</h4>
+                    <div className='flex gap-8 flex-wrap'>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Country</span>
+                            <p>Ghana</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Region</span>
+                            <p>Greater Accra Region</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>City</span>
+                            <p>Tema</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Residential Address</span>
+                            <p>H/N: 121 N2/C2</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Home Town</span>
+                            <p>Gomoa Dewurampong</p>
+                        </div>
+                    </div>
+                </div>
+                <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
+                    <h4 className='font-bold'>Work Details</h4>
+                    <div className='flex gap-8 flex-wrap'>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Employee Number</span>
+                            <p>1026325</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Occupation</span>
+                            <p>Driver</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Company</span>
+                            <p>GPHA</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Location</span>
+                            <p>Tema, Accra</p>
+                        </div>
+                    </div>
+                </div>
+                <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
+                    <h4 className='font-bold'>Family Details</h4>
+                    <div className='flex gap-8 flex-wrap'>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Marital Status</span>
+                            <p>Single</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Spouse Name</span>
+                            <p>-</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>No. of Children</span>
+                            <p>-</p>
+                        </div>
+                    </div>
+                </div>
+                <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
+                    <h4 className='font-bold'>Next of Kin Details</h4>
+                    <div className='flex gap-8 flex-wrap'>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Name</span>
+                            <p>Evans Essien</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Relation</span>
+                            <p>Brother</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Phone</span>
+                            <p>0260260265</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Occupation</span>
+                            <p>Student</p>
+                        </div>
+                        <div>
+                            <span className='text-xs text-gray-300 '>Residential Address</span>
+                            <p>H/n: 121 N2/C2</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div 
+              className='cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[50%] bottom-[-.7rem] 2xl:top-6 z-4 bg-white p border border-gray-300 rounded-full' 
+                onClick={toggleDetails}
+              >
+                <img src={arrow} className={` ${isToggled && 'active'}
+                     w-4 h-4 arrow-detail`} alt="" />
+            </div>
+        </div>
+
         <div className='w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>20 transactions found</span>
+              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>20 accounts found</span>
             </div>
             <div className='flex items-center gap-2'>
-              <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'><span className='h-6 w-6'><img src={search} className='' alt="" /></span><input type="text" className='outline-0' placeholder='Search account'/></div>
-              <div className='flex bg-gray-200 p-1 rounded-lg'>
-                <button className='active filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
-                <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Active</button>
-                <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Inactive</button>
-                <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Closed</button>
+              <div className='border flex items-center gap-2 border-gray-300 p-1 rounded-lg'>
+                <span className='h-4 w-4'><img src={search} className='' alt="" /></span>
+                <input type="text" className='outline-0 text-xs py-[.18rem]' placeholder='Search account'/>
+              </div>
+              <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
+                <button className='active filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>All</button>
+                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-1'>Deposites</button>
+                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-1'>Debits</button>
               </div>
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
-                <img src={refresh} alt="" className='w-8 h-8'/>
+                <img src={refresh} alt="" className='w-6 h-6'/>
               </button>
             </div>
           </div>
+
           <div>
             <table className='w-full'>
               <thead className=' border-y border-gray-300'>
@@ -199,7 +342,8 @@ function Transactions() {
         </div>
       </div>
     </div>
+    // <div>SavingsAccount</div>
   )
 }
 
-export default Transactions
+export default SavingsAccount

@@ -13,7 +13,7 @@ function Loan() {
 
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
-      <div className={`${showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative  py-4 `}>
+      <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative  py-4 `}>
         <h4>Loans Payment</h4>
         <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-2'>
           <img className='w-6 h-6 ' src={close} alt="" />
@@ -50,7 +50,7 @@ function Loan() {
             <button className='w-full rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Loan Transaction</button>
         </form>
       </div>
-      <div className='py-4 transition w-full md:pl-4 md:border-l md:border-gray-200'>
+      <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
         <div className='flex justify-between items-center border-b border-gray-100 pb-4'>
           <div className='flex items-center gap-8'>
             <h4 className='m-0 font-bold '>Loans Payment</h4>
