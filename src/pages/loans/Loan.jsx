@@ -15,13 +15,13 @@ function Loan() {
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
       <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative  py-4 `}>
         <h4>Loans Payment</h4>
-        <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-2'>
-          <img className='w-6 h-6 ' src={close} alt="" />
+        <button onClick={handleShowTransaction} className='p-1 absolute right-[-.5rem] top-2'>
+          <img className='w-4 h-4 ' src={close} alt="" />
         </button>
         <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
-        <form className='mt-4 '>
+        <form className='mt-4 flex flex-col gap-2'>
           <h5 className='font-bold'>Account Details</h5>
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-2'>
             <div className='flex flex-col gap-1'>
               <span className='text-xs text-gray-500'>Account Number</span>
               <p className='m-0'>1071010148099</p>
@@ -40,7 +40,7 @@ function Loan() {
             </div>
             <div className='flex flex-col gap-1'>
               <span className='text-xs text-gray-500'>Transaction Type</span>
-              <p>Loan Payment</p>
+              <p className='m-0'>Loan Payment</p>
             </div>
             <div className='flex flex-col gap-1'>
               <span className='text-xs text-gray-500'>Transacted Amount</span>
@@ -51,7 +51,7 @@ function Loan() {
         </form>
       </div>
       <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
-        <div className='flex justify-between items-center border-b border-gray-100 pb-4'>
+        <div className='flex justify-between items-center pb-4'>
           <div className='flex items-center gap-8'>
             <h4 className='m-0 font-bold '>Loans Payment</h4>
 

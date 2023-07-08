@@ -15,45 +15,47 @@ function Transactions() {
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
       <div className={`${!showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative py-4`}>
         <h4>Make Transaction</h4>
-        <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-2'>
-          <img className='w-6 h-6 ' src={close} alt="" />
+        <button onClick={handleShowTransaction} className='p-1 absolute right-[-.5rem] top-2'>
+          <img className='w-4 h-4 ' src={close} alt="" />
         </button>
         <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
-        <form className='mt-4 flex flex-col gap-4'>
-          <h5>Account Details</h5>
-
-          <div className='flex flex-col gap-1'>
-            <span className='text-sm text-gray-500'>Account Number</span>
-            <p>1071010148099</p>
-          </div>
-          <div className='flex flex-col gap-1'>
-            <span className='text-sm text-gray-500'>Account Name</span>
-            <p>Michael Essien Amoodu</p>
-          </div>
-          <div className='flex flex-col gap-1'>
-            <span className='text-sm text-gray-500'>Account Status</span>
-            <span>Active</span>
-          </div>
-          <div className='flex flex-col gap-1'>
-            <span className='text-sm text-gray-500'>Account Balance</span>
-            <p>GH¢ 200,000.00</p>
-          </div>
-          <div className='flex flex-col gap-1'>
-            <span className='text-sm text-gray-500'>Transaction Type</span>
-            <select name="" id="">
-              <option value="Deposite">Deposite</option>
-              <option value="Debit">Debit</option>
-            </select>
-          </div>
-          <div className='flex flex-col gap-1'>
-            <span className='text-sm text-gray-500'>Transacted Amount</span>
-            <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+        <form className='mt-4 flex flex-col gap-2'>
+          <h5 className='font-bold'>Account Details</h5>
+          <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-500'>Account Number</span>
+              <p className='m-0'>1071010148099</p>
+            </div>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-500'>Account Name</span>
+              <p className='m-0'>Michael Essien Amoodu</p>
+            </div>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-500'>Account Status</span>
+              <span>Active</span>
+            </div>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-500'>Account Balance</span>
+              <p className='m-0'>GH¢ 200,000.00</p>
+            </div>
+            <div className='flex flex-col gap-1'>
+              <span className='text-sm text-gray-500'>Transaction Type</span>
+              <select name="" className='rounded border border-gray-200 p-2' id="">
+                <option value="Deposite">Deposite</option>
+                <option value="Debit">Debit</option>
+                <option value="LoanPayment">Loan Payment</option>
+              </select>
+            </div>
+            <div className='flex flex-col gap-1'>
+              <span className='text-xs text-gray-500'>Transacted Amount</span>
+              <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+            </div>
           </div>
           <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
         </form>
       </div>
       <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
-        <div className='flex justify-between items-center border-b border-gray-100 pb-4'>
+        <div className='flex justify-between items-center pb-4'>
           <div className='flex items-center gap-8'>
             <h4 className='m-0 font-bold '>Transactions</h4>
 
