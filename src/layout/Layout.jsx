@@ -34,24 +34,24 @@ function Layout() {
             <nav className='mt-4'>
                 <ul className='flex flex-col gap-2'>
                     <li>
-                        <NavLink to="dashboard" className='flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={dashboard} alt="" className='w-6 h-6 mr-2'/> <span>DASHBOARD</span></NavLink>
+                        <NavLink to="dashboard" className='text-xs flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={dashboard} alt="" className='w-6 h-6 mr-2'/> <span>DASHBOARD</span></NavLink>
                     </li>
                     <li>
-                        <NavLink to="savings" className='flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={savings} alt="" className='w-6 h-6 mr-2'/> <span>SAVINGS</span></NavLink>
+                        <NavLink to="savings" className='text-xs flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={savings} alt="" className='w-6 h-6 mr-2'/> <span>SAVINGS</span></NavLink>
                     </li>
                     <li>
-                        <NavLink to="loans" className='flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={loans} alt="" className='w-6 h-6 mr-2'/> <span>LOANS</span></NavLink>
+                        <NavLink to="loans" className='text-xs flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={loans} alt="" className='w-6 h-6 mr-2'/> <span>LOANS</span></NavLink>
                     </li>
                     <li>
-                        <NavLink to="transactions" className='flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={transactions} alt="" className='w-6 h-6 mr-2'/> <span>TRANSACTIONS</span></NavLink>
+                        <NavLink to="transactions" className='text-xs flex items-center rounded gap-4 p-2 hover:bg-gray-100'><img src={transactions} alt="" className='w-6 h-6 mr-2'/> <span>TRANSACTIONS</span></NavLink>
                     </li>
                     <li>
-                        <NavLink to="users" className='flex items-center rounded gap-4 p-2 text-black hover:bg-gray-100'><img src={users} alt="" className='w-6 h-6 mr-2'/> <span>USERS</span></NavLink>
+                        <NavLink to="users" className='text-xs flex items-center rounded gap-4 p-2 text-black hover:bg-gray-100'><img src={users} alt="" className='w-6 h-6 mr-2'/> <span>USERS</span></NavLink>
                     </li>
                 </ul>
             </nav>
         </aside>
-        <main className={`${isToggled && 'active'}`}>
+        <main className={`${isToggled && 'active'} bg-gray-100`}>
             <header className='sticky top-0 bg-white shadow  z-10'>
                 <div className='hidden cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[-.8rem] top-4 2xl:top-6 z-2 bg-white p border border-gray-300 rounded-full' onClick={toggleMenu}>
                     <img src={arrow} className={`${!isToggled && 'active'} w-4 h-4 arrow`} alt="" />

@@ -18,42 +18,44 @@ const LoansAccount = () => {
     }
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
-      <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative  py-4 `}>
-        <h4>Make Transaction</h4>
-        <button onClick={handleShowTransaction} className='p-1 absolute right-[-.5rem] top-2'>
-          <img className='w-4 h-4 ' src={close} alt="" />
-        </button>
-        <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
-        <form className='mt-4 flex flex-col gap-2'>
-          <h5 className='font-bold'>Account Details</h5>
-          <div className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Number</span>
-              <p className='m-0'>1071010148099</p>
+      <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
+        <div>
+          <h4>Make Transaction</h4>
+          <button onClick={handleShowTransaction} className='p-1 absolute right-[-.5rem] top-2'>
+            <img className='w-4 h-4 ' src={close} alt="" />
+          </button>
+          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
+          <form className='mt-4 flex flex-col gap-2'>
+            <h5 className='font-bold'>Account Details</h5>
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Number</span>
+                <p className='m-0'>1071010148099</p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Name</span>
+                <p className='m-0'>Michael Essien Amoodu</p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Status</span>
+                <span>Active</span>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Balance</span>
+                <p className='m-0'>GH¢ 200,000.00</p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Transaction Type</span>
+                <p className='m-0'>Loan Payment</p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Transacted Amount</span>
+                <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+              </div>
             </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Name</span>
-              <p className='m-0'>Michael Essien Amoodu</p>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Status</span>
-              <span>Active</span>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Balance</span>
-              <p className='m-0'>GH¢ 200,000.00</p>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Transaction Type</span>
-              <p className='m-0'>Loan Payment</p>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Transacted Amount</span>
-              <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
-            </div>
-          </div>
-          <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
-        </form>
+            <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
+          </form>
+        </div>
       </div>
       <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
         <div className='flex justify-between items-center pb-4'>
@@ -70,7 +72,7 @@ const LoansAccount = () => {
           </div>
         </div>
         <><Overview/></>
-        <div className='my-4 border border-gray-300 rounded-lg h-full relative'>
+        <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
             <div className='w-full h-24 bg-gray-200 rounded-lg'></div>
             <div className='pt-8 px-4'>
                 <div className='absolute w-28 h-28 rounded-full bg-white border border-gray-200 top-2 left-4'></div>
@@ -208,7 +210,7 @@ const LoansAccount = () => {
             </div>
         </div>
 
-        <div className='w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
+        <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
               <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>20 accounts found</span>

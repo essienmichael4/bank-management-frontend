@@ -3,7 +3,7 @@ import revenue from './revenue.svg'
 
 function Overview() {
   return (
-    <div className='w-full flex flex-wrap gap-2 items-center justify-around border border-gray-300 rounded-lg'>
+    <div className='bg-white w-full flex flex-wrap gap-2 items-center justify-around border border-gray-300 rounded-lg'>
         <div className='p-4 2xl:p-6 bg-green-200 flex-1 rounded-lg m-2 flex flex-col gap-4'>
             <div className='flex items-center gap-4'>
                 <img src={revenue} className='w-8 h-8' alt="" />

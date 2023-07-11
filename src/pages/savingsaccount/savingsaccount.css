@@ -5,3 +5,9 @@
 .arrow-detail.active{
     transform: rotate(270deg);
 }
+
+.image__bg{
+    background-image: url(../../assets/img1.jpg);
+    background-size: cover;
+    background-position: center;
+}

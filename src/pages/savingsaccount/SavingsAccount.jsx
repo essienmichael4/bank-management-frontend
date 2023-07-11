@@ -6,6 +6,7 @@ import refresh from './refresh.svg'
 import search from './search.svg'
 import close from './close.svg'
 import arrow from './arrow.svg'
+import arrowleft from './arrowleft.svg'
 
 const SavingsAccount = () => {
     const [showTransaction, setShowTransaction] = useState(false)
@@ -18,51 +19,53 @@ const SavingsAccount = () => {
     }
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
-      <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative  py-4 `}>
-        <h4>Make Transaction</h4>
-        <button onClick={handleShowTransaction} className='p-1 absolute right-[-.5rem] top-2'>
-          <img className='w-4 h-4'  src={close} alt="" />
-        </button>
-        <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
-        <form className='mt-4 flex flex-col gap-2'>
-          <h5 className='font-bold'>Account Details</h5>
-          <div className='flex flex-col gap-4'>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Number</span>
-              <p className='m-0'>1071010148099</p>
+      <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
+        <div className='py-4 px-2'>
+          <h4>Make Transaction</h4>
+          <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
+            <img className='w-4 h-4'  src={close} alt="" />
+          </button>
+          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
+          <form className='mt-4 flex flex-col gap-2'>
+            <h5 className='font-bold'>Account Details</h5>
+            <div className='flex flex-col gap-4'>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Number</span>
+                <p className='m-0'>1071010148099</p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Name</span>
+                <p className='m-0'>Michael Essien Amoodu</p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Status</span>
+                <span>Active</span>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Account Balance</span>
+                <p className='m-0'>GH¢ 200,000.00</p>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-sm text-gray-500'>Transaction Type</span>
+                <select name="" id="">
+                  <option value="Deposite">Deposite</option>
+                  <option value="Debit">Debit</option>
+                </select>
+              </div>
+              <div className='flex flex-col gap-1'>
+                <span className='text-xs text-gray-500'>Transacted Amount</span>
+                <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+              </div>
             </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Name</span>
-              <p className='m-0'>Michael Essien Amoodu</p>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Status</span>
-              <span>Active</span>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Account Balance</span>
-              <p className='m-0'>GH¢ 200,000.00</p>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-sm text-gray-500'>Transaction Type</span>
-              <select name="" id="">
-                <option value="Deposite">Deposite</option>
-                <option value="Debit">Debit</option>
-              </select>
-            </div>
-            <div className='flex flex-col gap-1'>
-              <span className='text-xs text-gray-500'>Transacted Amount</span>
-              <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
-            </div>
+            <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
+          </form>
           </div>
-          <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
-        </form>
       </div>
       <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
         <div className='flex justify-between items-center pb-4'>
-          <div className='flex items-center gap-8'>
-            <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
-                <img src={refresh} alt="" className='w-8 h-8'/>
+          <div className='flex items-center gap-4'>
+            <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg'>
+                <img src={arrowleft} alt="" className='w-4 h-4'/>
               </button>
             <h4 className='m-0 font-bold '>Savings Account</h4>
 
@@ -73,9 +76,9 @@ const SavingsAccount = () => {
           </div>
         </div>
         <><Overview/></>
-        <div className='my-4 border border-gray-300 rounded-lg h-full relative'>
-            <div className='w-full h-24 bg-gray-200 rounded-lg'></div>
-            <div className='pt-8 px-4'>
+        <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
+            <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>
+            <div className='pt-4 px-4'>
                 <div className='absolute w-28 h-28 rounded-full bg-white border border-gray-200 top-2 left-4'></div>
                 <h3>Michael Essien Amodu</h3>
                 <div className='flex flex-wrap gap-8'>
@@ -199,7 +202,7 @@ const SavingsAccount = () => {
                 </div>
             </div>
             <div 
-              className='cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[50%] bottom-[-.7rem] 2xl:top-6 z-4 bg-white p border border-gray-300 rounded-full' 
+              className='cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[50%] bottom-[-.7rem] z-4 bg-white p border border-gray-300 rounded-full' 
                 onClick={toggleDetails}
               >
                 <img src={arrow} className={` ${isToggled && 'active'}
@@ -207,7 +210,7 @@ const SavingsAccount = () => {
             </div>
         </div>
 
-        <div className='w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
+        <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
               <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>20 accounts found</span>

@@ -36,8 +36,8 @@ function Dashboard() {
         <h4 className='font-bold'> Your Overview</h4>
       </div>
       <><Overview /></>
-      <div className='flex items-center justify-between flex-wrap gap-2 mt-4 '>
-        <div className='w-full lg:w-[10rem] 2xl:w-1/3 min-w-[320px] border border-gray-300 p-4 rounded-lg'>
+      <div className=' flex items-center justify-between flex-wrap gap-2 mt-4 '>
+        <div className='bg-white w-full lg:w-[10rem] 2xl:w-1/3 min-w-[320px] border border-gray-300 p-4 rounded-lg'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <h5 className='m-0'>Revenue</h5>
           </div>
@@ -45,7 +45,7 @@ function Dashboard() {
             <RevenueChart />
           </div>
         </div>
-        <div className='flex-1 min-w-[320px] border border-gray-300 p-4 rounded-lg'>
+        <div className='bg-white flex-1 min-w-[320px] border border-gray-300 p-4 rounded-lg'>
           <div className='flex flex-wrap items-center justify-between mb-4'>
             <h5 className='m-0'>Transaction Activities</h5>
             <div className='flex flex-wrap justify-end items-center gap-2'>
@@ -69,7 +69,7 @@ function Dashboard() {
           </div>
         </div>
       </div>
-      <div className='w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
+      <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
         <div className='flex items-center justify-between py-2 mb-4'>
           <div className='flex items-center gap-2'>
             <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>Last 20 transactions</span>
