@@ -65,7 +65,7 @@ function Savings() {
             </div>
           </div>
 
-          <NavLink className='text-blue-500 p-1 border text-sm border-blue-500 rounded lg:text-light 2xl:p-2 2xl:rounded-lg' to="../dashboard">Add Account</NavLink>
+          <NavLink to='create' className='text-blue-500 p-1 border text-sm border-blue-500 rounded lg:text-light 2xl:p-2 2xl:rounded-lg'>Add Account</NavLink>
         </div>
         <><Overview/></>
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>

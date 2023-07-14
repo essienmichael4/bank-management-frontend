@@ -202,7 +202,7 @@ const SavingsAccount = () => {
                 </div>
             </div>
             <div 
-              className='cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[50%] bottom-[-.7rem] z-4 bg-white p border border-gray-300 rounded-full' 
+              className='cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[49%] bottom-[-.7rem] z-4 bg-white p border border-gray-300 rounded-full' 
                 onClick={toggleDetails}
               >
                 <img src={arrow} className={` ${isToggled && 'active'}
