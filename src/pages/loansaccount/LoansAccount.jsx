@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import './loansaccount.css'
 import { NavLink } from 'react-router-dom'
 import Overview from '../../components/overview/Overview'
-import refresh from './refresh.svg'
-import search from './search.svg'
-import close from './close.svg'
-import arrow from './arrow.svg'
+import refresh from '../../assets/refresh.svg'
+import search from '../../assets/search.svg'
+import close from '../../assets/close.svg'
+import arrow from '../../assets/arrow.svg'
 
 const LoansAccount = () => {
     const [showTransaction, setShowTransaction] = useState(false)

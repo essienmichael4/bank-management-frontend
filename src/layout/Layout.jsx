@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import './layout.css'
 import { Outlet, NavLink, useResolvedPath } from 'react-router-dom'
-import menu from './menu.svg'
-import dashboard from './dashboard.svg'
-import users from './users.svg'
-import savings from './savings.svg'
-import loans from './loans.svg'
-import transactions from './transactions.svg'
-import close from './close.svg'
-import arrow from './arrow.svg'
+import menu from '../assets/menu.svg'
+import dashboard from '../assets/dashboard.svg'
+import users from '../assets/users.svg'
+import savings from '../assets/savings.svg'
+import loans from '../assets/loans.svg'
+import transactions from '../assets/transactions.svg'
+import close from '../assets/close.svg'
+import arrow from '../assets/arrow.svg'
 
 
 function Layout() {
@@ -26,7 +26,7 @@ function Layout() {
 
   return (
     <>
-        <aside className={`${isToggled && 'active'} bg-white lg:fixed lg:w-[220px] lg:top-0 bottom-0 left-0 lg:border-r lg:border-primary-100 p-4 overflow-hidden`}>
+        <aside className={`${isToggled && 'active'} bg-white lg:fixed lg:w-[220px] lg:top-0 lg:bottom-0 left-0 lg:border-r lg:border-primary-100 lg:p-4 overflow-hidden`}>
             <img src={close} className='w-6 h-6 absolute right-2 top-2 lg:hidden' alt="" onClick={toggleMenu}/>
             <div className='mb-10 mt-4'>
                 <h1 className='text-xl font-bold'>BMS</h1>

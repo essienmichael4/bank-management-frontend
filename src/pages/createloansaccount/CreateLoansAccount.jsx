@@ -1,5 +1,5 @@
 import React from 'react'
-import arrowleft from './arrowleft.svg'
+import arrowleft from '../../assets/arrowleft.svg'
 
 const CreateLoansAccount = () => {
     return (

@@ -1,3 +1,7 @@
+.filter.active{
+    @apply bg-white rounded-md
+}
+
 .arrow-detail{
     transform: rotate(90deg);
 }
