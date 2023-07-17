@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import { NavLink } from 'react-router-dom'
 import Overview from '../../components/overview/Overview'
-import refresh from './refresh.svg'
-import search from './search.svg'
-import close from './close.svg'
+import users from '../../assets/users.svg'
+import refresh from '../../assets/refresh.svg'
+import search from '../../assets/search.svg'
+import close from '../../assets/close.svg'
 
 function Transactions() {
   const [showTransaction, setShowTransaction] = useState(false)
@@ -78,128 +79,336 @@ function Transactions() {
             <div className='flex items-center gap-2'>
               <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'><span className='h-6 w-6'><img src={search} className='' alt="" /></span><input type="text" className='outline-0' placeholder='Search account'/></div>
               <div className='flex bg-gray-200 p-1 rounded-lg'>
-                <button className='active filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
-                <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Active</button>
-                <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Inactive</button>
-                <button className=' filter text-sm flex whitespace-no-wrap items-center justify-center py-1 px-2'>Closed</button>
+                <button className='active filter filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
+                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Active</button>
+                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Inactive</button>
+                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Closed</button>
               </div>
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
                 <img src={refresh} alt="" className='w-8 h-8'/>
               </button>
             </div>
           </div>
-          <div>
-            <table className='w-full'>
-              <thead className=' border-y border-gray-300'>
-                <tr className=''>
-                  <th className='text-start py-4 text-gray-500 font-light'>ID</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Name</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Amount</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Date</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Transaction Type</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Transacted By</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <div className='min-w-[800px]'>
+          <table className='w-full'>
+            <thead className=' border-y border-gray-300'>
+              <tr className=''>
+                <th className='px-2 text-start text-xs py-4 text-gray-400 font-medium'>ID</th>
+                <th className='text-start text-xs py-4 text-gray-400 font-medium'>Name</th>
+                <th className='text-start text-xs py-4 text-gray-400 font-medium'>Amount</th>
+                <th className='text-start text-xs py-4 text-gray-400 font-medium'>Date</th>
+                <th className='text-start text-xs py-4 text-gray-400 font-medium'>Transaction Type</th>
+                <th className='text-start text-xs py-4 text-gray-400 font-medium'>Transacted By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+              <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                <td className='px-2 py-4 text-sm'>#1</td>
+                <td className='py-4 text-sm flex items-center gap-2'>
+                  <div className='p-2 border border-gray-200 rounded-full'>
+                    <img className='w-4 h-4' src={users} alt="" />
+                  </div>
+                  <div>
+                    <p className='-mb-1 font-medium'>Michae Essien</p>
+                    <span className='-mt-2 text-xs text-gray-300'>essienmicahel.gmail.com</span>
+                  </div>
+                </td>
+                <td className='py-4 text-sm'>¢ 100.00</td>
+                <td className='py-4 text-sm'>12-06-2022</td>
+                <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
+                <td className='py-4 text-sm'>Ghost Name</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         </div>
       </div>
     </div>

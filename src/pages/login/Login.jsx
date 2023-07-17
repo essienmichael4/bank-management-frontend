@@ -7,17 +7,17 @@ function Login() {
         <div className='content absolute p-4 rounded-t-3xl w-full bg-white b-0 
         md:px-20 md:h-1/2 md:flex md:items-center md:justify-center lg:w-1/2 lg:relative
         lg:h-full lg:rounded-t-none'>
-          <form className='md:w-full'>
+          <form className='md:w-full xl:w-[60%]'>
             <h1>Login</h1>
             <p className='text-xs mb-3 md:mb-8'>The faster you type, the faster you manage your stuff</p>
-            <div className="form-control ">
+            <div className="form-control flex flex-col gap-2">
               <label htmlFor="username">Email or Username</label>
               <input type="text" className='py-2 px-2 text-sm rounded border border-slate-200 w-full' placeholder='Please enter your email/username'/>
             </div>
             <div className='flex justify-between mb-3 mt-1'>
               <p className='text-red-400 text-xs md:text-sm'>Password cannot be empty</p>
             </div>
-            <div>
+            <div className="form-control flex flex-col gap-2">
               <label htmlFor="password">Password</label>
               <input type="password"  className='py-2 px-2 text-sm rounded border border-slate-200 w-full' placeholder="Please enter your password"/>
             </div>
