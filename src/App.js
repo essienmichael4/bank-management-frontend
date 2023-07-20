@@ -10,26 +10,29 @@ import SavingsAccount from "./pages/savingsaccount/SavingsAccount";
 import LoansAccount from "./pages/loansaccount/LoansAccount";
 import CreateSavingsAccount from "./pages/createsavingsaccount/CreateSavingsAccount";
 import CreateLoansAccount from "./pages/createloansaccount/CreateLoansAccount";
-
-// import { DatePicker } from 'antd';
+import RequireAuth from "./components/RequireAuth";
+import SetAuth from "./components/SetAuth";
 
 function App() {
   return (
     <div className="App text-black">
-
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="bms" element={<Layout/>} >
-          <Route path="dashboard" element={<Dashboard/>} />
-          <Route path="savings" element={<Savings />} />
-          <Route path="savings/:id" element={<SavingsAccount />} />
-          <Route path="savings/create" element={<CreateSavingsAccount />} />
-          <Route path="loans" element={<Loan />} />
-          <Route path="loans/:id" element={<LoansAccount />} />
-          <Route path="loans/create" element={<CreateLoansAccount />} />
-          <Route path="transactions" element={<Transactions />} />
-          <Route path="users" element={<Users />} />
-        </Route>
+        {/* <Route element={<SetAuth />}> */}
+          <Route path="/" element={<Login />} />
+          <Route element={<RequireAuth />}>
+            <Route path="bms" element={<Layout/>} >
+              <Route path="dashboard" element={<Dashboard/>} />
+              <Route path="savings" element={<Savings />} />
+              <Route path="savings/:id" element={<SavingsAccount />} />
+              <Route path="savings/create" element={<CreateSavingsAccount />} />
+              <Route path="loans" element={<Loan />} />
+              <Route path="loans/:id" element={<LoansAccount />} />
+              <Route path="loans/create" element={<CreateLoansAccount />} />
+              <Route path="transactions" element={<Transactions />} />
+              <Route path="users" element={<Users />} />
+            </Route>
+          </Route>
+        {/* </Route> */}
       </Routes>
     </div>
   );

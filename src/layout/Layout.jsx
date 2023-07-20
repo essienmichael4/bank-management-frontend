@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import useAuth from '../hooks/useAuth'
 import './layout.css'
 import { Outlet, NavLink, useResolvedPath } from 'react-router-dom'
 import menu from '../assets/menu.svg'
@@ -12,6 +13,7 @@ import arrow from '../assets/arrow.svg'
 
 
 function Layout() {
+    const {auth} = useAuth()
     const path = useResolvedPath().pathname.split("/")[2].toLocaleUpperCase()
     const date = useState(new Date().toDateString())
     const [isToggled, setIsToggled] = useState(false)
@@ -74,9 +76,11 @@ function Layout() {
                             <input type="text" className='max-w-xl flex-1 text-xs min-w-[100px] outline-0 md:text-base' placeholder='Search for account'/>
                             <button className='bg-gray-300 text-xs rounded py-1 px-1 md:px-2 font-semibold md:text-base'>Search</button>
                         </form>
-                        <div className='hidden md:block'>
-                            <h3 className='font-bold m-0'>Michael Essien</h3>
-                            <p className='text-sm text-gray-400 m-0'>Admin</p>
+                        <div className='hidden md:block w-36 overflow-hidden'>
+                            <h3 className='font-bold m-0 whitespace-nowrap truncate'>{auth?.user.firstname} {auth?.user.lastname} {auth?.user.othernames}</h3>
+                            <p className='text-sm text-gray-400 m-0 whitespace-nowrap truncate'>{auth?.user.departments.map(department=>{
+                                return <span className='mr-1'>{department.office} </span>
+                            })}</p>
                         </div>
                         <div className='w-8 h-8 md:w-10 md:h-10 2xl:w-12 2xl:h-12 rounded-full bg-black'></div>
                     </div>

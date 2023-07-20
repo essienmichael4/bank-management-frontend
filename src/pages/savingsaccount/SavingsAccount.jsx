@@ -75,7 +75,7 @@ const SavingsAccount = () => {
             </div>
           </div>
         </div>
-        <><Overview/></>
+        {/* <><Overview/></> */}
         <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
             <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>
             <div className='pt-4 px-4'>

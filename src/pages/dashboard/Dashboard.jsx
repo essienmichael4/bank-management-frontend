@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from '../../api/axios'
 import './dashboard.css'
 import users from '../../assets/users.svg'
 import Overview from '../../components/overview/Overview'
@@ -9,6 +10,10 @@ import RevenueChart from '../../components/revenuechart/RevenueChart';
 import { NavLink } from 'react-router-dom';
 
 function Dashboard() {
+  const [overview, setOverview] = useState([])
+  const [dataBalance, setDataBalance] = useState([])
+  const [dataLables, setDataLables] = useState([])
+  const [transactions, setTransactions] = useState([])
   const [dates, setDates] = useState([])
   const[filters, setFilters] = useState({
     activeFilter:{id:"day", name:"Today"},
@@ -19,6 +24,46 @@ function Dashboard() {
       {id:"year", name:"This year"}
     ]
   })
+
+  useEffect( ()=>{
+    let isMounted = true
+    const controller = new AbortController()
+
+    const getOverview = async() => {
+      try{
+        const response = await axios.get("/overview/dashboard", {signal: controller.signal})
+        console.log(response.data);
+        setDataBalance(response.data.map((item)=> item.balance))
+        setDataLables(response.data.map((item)=> item.tag))
+        isMounted && setOverview(response.data)
+      }catch(err){
+        console.log(err);
+      }
+    }
+    const getTransactions = async() => {
+      try{
+        const response = await axios.get("/transactions/dashboard", {signal: controller.signal})
+        console.log(response.data);
+        isMounted && setTransactions(response.data)
+      }catch(err){
+        console.log(err);
+      }
+    }
+
+    getOverview()
+    getTransactions()
+
+    // axios.get("/overview/dashboard")
+    //   .then(response=> { console.log(response.data);
+    //     setOverview(response.data)})
+    //   .catch(err=>console.log(err))
+
+
+    return ()=>{
+      isMounted = false
+      controller.abort()
+    }
+  },[])
 
   const handleFilterChange = (key)=> {
     setFilters({...filters, activeFilter: filters.fields[key]})
@@ -36,14 +81,14 @@ function Dashboard() {
         <h3 className='lg:hidden'>Dashboard </h3>
         <h4 className='font-bold'> Your Overview</h4>
       </div>
-      <><Overview /></>
+      <><Overview overviews={overview} /></>
       <div className=' flex items-center justify-between flex-wrap gap-2 mt-4 '>
         <div className='bg-white w-full lg:w-[10rem] 2xl:w-1/3 min-w-[320px] border border-gray-300 p-4 rounded-lg'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <h5 className='m-0'>Revenue</h5>
           </div>
           <div className='w-full lg:h-[20rem] 2xl:h-[27rem] h-full'>
-            <RevenueChart />
+          <RevenueChart dataBalance={dataBalance} dataNames={dataLables}/>
           </div>
         </div>
         <div className='bg-white flex-1 min-w-[320px] border border-gray-300 p-4 rounded-lg'>
