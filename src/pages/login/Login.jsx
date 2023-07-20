@@ -65,6 +65,7 @@ function Login() {
                 }} 
                 value={username} 
                 required 
+                minLength={2}
                 focused={usernameFocused.toString()}
                 className='py-2 px-2 text-sm rounded border border-slate-200 w-full' 
                 placeholder='Please enter your email/username'
@@ -82,6 +83,7 @@ function Login() {
                   setPassword(e.target.value)
                 }} 
                 value={password} 
+                minLength={8}
                 required 
                 focused={passwordFocused.toString()}
                 className='py-2 px-2 text-sm rounded border border-slate-200 w-full' 
