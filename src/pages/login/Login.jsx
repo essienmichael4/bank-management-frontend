@@ -31,7 +31,7 @@ function Login() {
       console.log(response.data);
 
       const user = response.data.user
-      const token = response.data.user
+      const token = response.data.token
       
       localStorage.setItem("bmsUser", JSON.stringify(user))
       localStorage.setItem("bmsUserAccessToken", JSON.stringify(token))

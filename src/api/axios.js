@@ -6,5 +6,11 @@ export default axios.create({
 
 export const axiosPrivate = axios.create({
     baseURL: "http://localhost:5000/api/v1",
-    headers: {"Content-Type": "Application/json"}
+    headers: {"Content-Type": "Application/json"},
 })
+
+export const axiosPrivateNew = axios.create({
+    baseURL: "http://localhost:5000/api/v1",
+    headers: {"Content-Type": "Application/json"},
+})
+
