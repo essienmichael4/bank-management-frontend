@@ -116,7 +116,7 @@ function Savings() {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4  mb-8 overflow-y-auto'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Accounts</h5><span className='text-xs mt-2'>{countAccount} accounts found</span>
+              <h5 className='text-xl m-0'>Accounts</h5><span className='text-xs text-gray-300 mt-2'>{countAccount} accounts found</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'><span className='h-6 w-6'><img src={search} className='' alt="" /></span><input type="text" className='outline-0' placeholder='Search account'/></div>

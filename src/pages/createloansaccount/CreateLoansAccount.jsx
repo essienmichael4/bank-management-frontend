@@ -1,14 +1,17 @@
 import React from 'react'
 import arrowleft from '../../assets/arrowleft.svg'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const CreateLoansAccount = () => {
+    const navigate = useNavigate()
+
     return (
         <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
           
           <div className={` py-4 transition w-full `}>
             <div className='flex justify-between items-center pb-4'>
               <div className='flex items-center gap-4'>
-                <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg'>
+                <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg' onClick={()=>{navigate(-1)}}>
                     <img src={arrowleft} alt="" className='w-4 h-4'/>
                   </button>
                 <h4 className='m-0 font-bold '>Apply for Loan</h4>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { ToastContainer } from 'react-toastify';
 import useAuth from '../hooks/useAuth'
 import './layout.css'
 import { Outlet, NavLink, useResolvedPath } from 'react-router-dom'
@@ -92,6 +93,7 @@ function Layout() {
                 </div>
             </section>
         </main>
+        <ToastContainer />
     </>
   )
 }

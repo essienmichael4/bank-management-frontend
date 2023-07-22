@@ -1,16 +1,59 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './savingsaccount.css'
-import { NavLink } from 'react-router-dom'
-import Overview from '../../components/overview/Overview'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import refresh from '../../assets/refresh.svg'
 import search from '../../assets/search.svg'
 import close from '../../assets/close.svg'
 import arrow from '../../assets/arrow.svg'
 import arrowleft from '../../assets/arrowleft.svg'
+import useAxios from '../../hooks/useAxios'
+
 
 const SavingsAccount = () => {
+    const navigate = useNavigate()
+    const {id} =useParams()
+    const axiosPrivateNew = useAxios()
+
     const [showTransaction, setShowTransaction] = useState(false)
     const [isToggled, setIsToggled] = useState(false)
+    const [account,setAccount] = useState({})
+    const [transactions, setTransactions] = useState([])
+    const [transactionCount,setTransactionCount] = useState()
+
+    useEffect( ()=>{
+      let isMounted = true
+      const controller = new AbortController()
+  
+      const getAccounts = async() => {
+        try{
+          const response = await axiosPrivateNew.get(`/saving/account/${id}`, {signal: controller.signal})
+          console.log(response.data);
+          // console.log(response.data.count._count.id)
+          // setCountAccount(response.data.count._count.id)
+          setTransactions(response.data.transactions) 
+          isMounted && setAccount(response.data) 
+          
+        }catch(err){
+          console.log(err);
+        }
+
+        // !account.firstname && navigate("../savings")
+        if(!account.firstname){
+          toast.error("Account does not exist")
+          navigate("../savings")
+        }
+      }
+
+      getAccounts()
+
+      return ()=>{
+        isMounted = false
+        controller.abort()
+      }
+    },[])
+
+
     function handleShowTransaction(){
         setShowTransaction(!showTransaction)
     }
@@ -64,35 +107,41 @@ const SavingsAccount = () => {
       <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
         <div className='flex justify-between items-center pb-4'>
           <div className='flex items-center gap-4'>
-            <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg'>
+            <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg' onClick={()=>{navigate(-1)}}>
                 <img src={arrowleft} alt="" className='w-4 h-4'/>
               </button>
             <h4 className='m-0 font-bold '>Savings Account</h4>
 
             <div className='flex items-center gap-2 '>
               <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
-              {/* <button>Debit</button> */}
             </div>
           </div>
         </div>
-        {/* <><Overview/></> */}
         <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
             <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>
             <div className='pt-4 px-4'>
                 <div className='absolute w-28 h-28 rounded-full bg-white border border-gray-200 top-2 left-4'></div>
-                <h3>Michael Essien Amodu</h3>
+                <h3>{account.firstname} {account.lastname} {account.othernames}</h3>
                 <div className='flex flex-wrap gap-8'>
                     <div>
+                        <span className='text-xs text-gray-300'>Account Balance</span>
+                        <p>{account.balance}</p>
+                    </div>
+                    <div>
                         <span className='text-xs text-gray-300'>Account Number</span>
-                        <p>1071010148099</p>
+                        <p>{account.account}</p>
                     </div>
                     <div>
                         <span className='text-xs text-gray-300'>Email</span>
-                        <p>essienmichael4@gamil.com</p>
+                        <p>{account.email}</p>
                     </div>
                     <div>
                         <span className='text-xs text-gray-300'>Phone</span>
-                        <p>0209241336</p>
+                        <p>{account.phone ? account.phone : "-" }</p>
+                    </div>
+                    <div>
+                        <span className='text-xs text-gray-300'>Ghana Card</span>
+                        <p>{account.card ? account.card : "-" }</p>
                     </div>
                 </div>
                 <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
@@ -100,15 +149,15 @@ const SavingsAccount = () => {
                     <div className='flex gap-8 flex-wrap'>
                         <div>
                             <span className='text-xs text-gray-300'>Date of Birth</span>
-                            <p>Thu Jun 06 1993</p>
+                            <p>{new Date(account.dateOfBirth).toDateString()}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300'>Gender</span>
-                            <p>Male</p>
+                            <p>{account.gender}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300'>Account Status</span>
-                            <p>Active</p>
+                            <p>{account.status}</p>
                         </div>
                     </div>
                 </div>
@@ -116,24 +165,28 @@ const SavingsAccount = () => {
                     <h4 className='font-bold'>Address</h4>
                     <div className='flex gap-8 flex-wrap'>
                         <div>
+                            <span className='text-xs text-gray-300 '>Nationality</span>
+                            <p>{account.address?.nationality}</p>
+                        </div>
+                        <div>
                             <span className='text-xs text-gray-300 '>Country</span>
-                            <p>Ghana</p>
+                            <p>{account.address?.country}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Region</span>
-                            <p>Greater Accra Region</p>
+                            <p>{account.address?.region}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>City</span>
-                            <p>Tema</p>
+                            <p>{account.address?.city}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Residential Address</span>
-                            <p>H/N: 121 N2/C2</p>
+                            <p>{account.address?.residentialAddress}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Home Town</span>
-                            <p>Gomoa Dewurampong</p>
+                            <p>{account.address?.homeTown}</p>
                         </div>
                     </div>
                 </div>
@@ -142,19 +195,19 @@ const SavingsAccount = () => {
                     <div className='flex gap-8 flex-wrap'>
                         <div>
                             <span className='text-xs text-gray-300 '>Employee Number</span>
-                            <p>1026325</p>
+                            <p>{account.work?.employeeId ? account.work?.employeeId : "-"}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Occupation</span>
-                            <p>Driver</p>
+                            <p>{account.work?.occupation}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Company</span>
-                            <p>GPHA</p>
+                            <p>{account.work?.company}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Location</span>
-                            <p>Tema, Accra</p>
+                            <p>{account.work?.location}</p>
                         </div>
                     </div>
                 </div>
@@ -163,15 +216,15 @@ const SavingsAccount = () => {
                     <div className='flex gap-8 flex-wrap'>
                         <div>
                             <span className='text-xs text-gray-300 '>Marital Status</span>
-                            <p>Single</p>
+                            <p>{account.family?.maritalStatus}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Spouse Name</span>
-                            <p>-</p>
+                            <p>{account.family?.spouseName ? account.family.spouseName : "-"}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>No. of Children</span>
-                            <p>-</p>
+                            <p>{account.family?.noOfChildren ? account.family.noOfChildren : "-"}</p>
                         </div>
                     </div>
                 </div>
@@ -180,23 +233,23 @@ const SavingsAccount = () => {
                     <div className='flex gap-8 flex-wrap'>
                         <div>
                             <span className='text-xs text-gray-300 '>Name</span>
-                            <p>Evans Essien</p>
+                            <p>{account.nextOfKing?.firstname} {account.nextOfKing?.lastname} {account.nextOfKing?.othernames}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Relation</span>
-                            <p>Brother</p>
+                            <p>{account.nextOfKing?.relation}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Phone</span>
-                            <p>0260260265</p>
+                            <p>{account.nextOfKing?.phone}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Occupation</span>
-                            <p>Student</p>
+                            <p>{account.nextOfKing?.occupation}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Residential Address</span>
-                            <p>H/n: 121 N2/C2</p>
+                            <p>{account.nextOfKing?.residentialAddress}</p>
                         </div>
                     </div>
                 </div>
@@ -213,7 +266,7 @@ const SavingsAccount = () => {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>20 accounts found</span>
+              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>{transactionCount} accounts found</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='border flex items-center gap-2 border-gray-300 p-1 rounded-lg'>
@@ -231,117 +284,35 @@ const SavingsAccount = () => {
             </div>
           </div>
 
-          <div>
-            <table className='w-full'>
-              <thead className=' border-y border-gray-300'>
-                <tr className=''>
-                  <th className='text-start py-4 text-gray-500 font-light'>ID</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Name</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Amount</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Date</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Transaction Type</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Transacted By</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-              </tbody>
-            </table>
+          <div className='min-w-[800px]'>
+            {transactions.length === 0 ? 
+              <div>No Transactions found</div> : 
+              
+              <table className='w-full'>
+                <thead className=' border-y border-gray-300'>
+                  <tr className=''>
+                    <th className='px-2 text-start text-xs py-4 text-gray-400 font-medium'>ID</th>
+                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Amount</th>
+                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Date</th>
+                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Transaction Type</th>
+                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Transacted By</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {transactions.map((transaction)=>{
+                    return (
+                      <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                    <td className='px-2 py-4 text-sm'>#{transaction.id}</td>
+                    <td className='py-4 text-sm'>¢ {transaction.amount}</td>
+                    <td className='py-4 text-sm'>{new Date(transaction.createdAt).toDateString()}</td>
+                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {transaction.type} </span> </td>
+                    <td className='py-4 text-sm'>{transaction.user.firstname} {transaction.user.lastname} {transaction.user.othernames}</td>
+                  </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            }
           </div>
         </div>
       </div>

@@ -113,7 +113,7 @@ function Loan() {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4  mb-8 overflow-y-auto'>
           <div className='flex flex-wrap items-center relative justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Loans</h5><span className='text-xs mt-2'>{countLoans} Loans found</span>
+              <h5 className='text-xl m-0'>Loans</h5><span className='text-xs text-gray-300 mt-2'>{countLoans} Loans found</span>
             </div>
             <div className='flex flex-wrap justify-between items-center gap-2'>
               <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'>
@@ -166,131 +166,10 @@ function Loan() {
                       <td className='py-6 text-sm'>¢ {loan.balance}</td>
                       <td className='py-6 text-sm'>{loan.phone ? loan.phone : "-"}</td>
                       <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {loan.status} </span> </td>
-                      <td className='py-6 text-sm'>{new Date(loan.loanDetail.dueAt)}</td>
+                      <td className='py-6 text-sm'>{new Date(loan.loanDetail.dueAt).toDateString()}</td>
                       <td className='py-6 text-sm'>{loan.loanDetail.modeOfPayment}</td>
                     </tr>
                   })}
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-6 text-sm'>#1</td>
-                    <td className='py-6 text-sm'>Michae Essien</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>¢ 100.00</td>
-                    <td className='py-6 text-sm'>0202362365</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> Deposit </span> </td>
-                    <td className='py-6 text-sm'>12-06-2022</td>
-                    <td className='py-6 text-sm'>Cash</td>
-                  </tr>
-                  
                 </tbody>
               </table>
             }
