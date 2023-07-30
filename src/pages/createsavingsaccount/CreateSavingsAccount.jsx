@@ -1,7 +1,9 @@
 import React, { useState,useEffect } from 'react'
-import arrowleft from '../../assets/arrowleft.svg'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
+import arrowleft from '../../assets/arrowleft.svg'
 import useAxios from '../../hooks/useAxios'
+import "./createsavingsaccount.css"
 
 const CreateSavingsAccount = () => {
     const navigate = useNavigate()
@@ -27,7 +29,7 @@ const CreateSavingsAccount = () => {
         spouseName: "",
         noOfChildren: ""
     })
-    const [nextOfKing,setNextOfKing] = useState({
+    const [nextOfKin,setNextOfKin] = useState({
         firstname: "",
         lastname: "",
         othernames: "",
@@ -45,7 +47,7 @@ const CreateSavingsAccount = () => {
         othernames: "",
         dateOfBirth: "",
         registration: "",
-        accountStatus: "",
+        accountStatus: "ACTIVE",
         gender: "",
         card: "",
     })
@@ -58,19 +60,14 @@ const CreateSavingsAccount = () => {
           try{
             const response = await axiosPrivateNew.get(`/saving/accounts/number`, {signal: controller.signal})
             console.log(response.data);
-            !response.data[0]?.account ? accountNumber = "1000000000000" : accountNumber = response.data
-
-            
-            // setAccount({...account, account: response.data.account}) 
-            // isMounted && setAccount(response.data) 
+            !response.data[0]?.account ? accountNumber = "1000000000000" : accountNumber = response.data[0].account
             
           }catch(err){
             console.log(err);
           }
   
           accountNumber = parseInt(accountNumber) + 1
-        //   setAccount(...account, account.account = accountNumber) 
-        setAccount({...account, account: accountNumber}) 
+          setAccount({...account, account: accountNumber.toString()}) 
         }
   
         getAccountNumber()
@@ -81,17 +78,75 @@ const CreateSavingsAccount = () => {
         }
       },[])
 
-    const handleSubmit = (e)=>{
+    const handleSubmit = async (e)=>{
         e.preventDefault()
+
+
         const newAccount = {
             ...account,
             work: work,
             family: family,
-            nextOfKing: nextOfKing,
+            nextOfKin: nextOfKin,
             address: address
         }
 
-        console.log(newAccount);
+        try{
+            const response = await axiosPrivateNew.post("/saving/account",
+             JSON.stringify(newAccount)
+            );
+            console.log(response.data);
+            setWork({
+                employeeId: "",
+                occupation: "",
+                company: "",
+                location: ""
+            }) 
+            setAddress({
+                residentialAddress: "",
+                homeTown: "",
+                city: "",
+                region: "",
+                country: "",
+                nationality: "",
+                digital: ""
+            })
+            setFamily({
+                maritalStatus: "",
+                spouseName: "",
+                noOfChildren: ""
+            })
+            setNextOfKin({
+                firstname: "",
+                lastname: "",
+                othernames: "",
+                relation: "",
+                phone: "",
+                occupation: "",
+                residentialAddress: ""
+            })
+            setAccount({
+                account: "",
+                email: "",
+                phone: "",
+                firstname: "",
+                lastname: "",
+                othernames: "",
+                dateOfBirth: "",
+                registration: "",
+                accountStatus: "",
+                gender: "",
+                card: "",
+            })
+            toast.error("Account Created Successfully")
+            navigate("bms/savings")
+          }catch(err){
+            console.log(err.response);
+            if(!err.response){
+              toast.error("Server not found")
+            }else{
+              toast.error(err.response.data.error)
+            }
+          }
     }
 
     return (
@@ -112,47 +167,47 @@ const CreateSavingsAccount = () => {
                     <div>
                         <div className='flex flex-wrap gap-8'>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Account Number</span>
-                                <input type="text" onChange={(e)=> setAccount({...account, account: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' value={account.account}/>
+                                <label className='text-xs text-gray-500'>Account Number <span className='text-red-500'>*</span></label>
+                                <input type="text" required onChange={(e)=> setAccount({...account, account: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' value={account.account}/>
                             </div>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>First Name</span>
-                                <input type="text" onChange={(e)=> setAccount({...account, firstname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                <label className='text-xs text-gray-500'>First Name <span className='text-red-500'>*</span></label>
+                                <input type="text" minLength={3} required onChange={(e)=> setAccount({...account, firstname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Last Name</span>
-                                <input type="text" onChange={(e)=> setAccount({...account, lastname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                <label className='text-xs text-gray-500'>Last Name <span className='text-red-500'>*</span></label>
+                                <input type="text" required onChange={(e)=> setAccount({...account, lastname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Other Names</span>
+                                <label className='text-xs text-gray-500'>Other Names</label>
                                 <input type="text" onChange={(e)=> setAccount({...account, othernames: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                         </div>
                         <div className='flex flex-wrap gap-8 my-4 '>
                             <div className='flex flex-col gap-2 w-[74%] 2xl:w-[64.5%]'>
-                                <span className='text-xs text-gray-300'>Email</span>
-                                <input type="text" onChange={(e)=> setAccount({...account, email: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                <label className='text-xs text-gray-500'>Email <span className='text-red-500'>*</span></label>
+                                <input type="text" required onChange={(e)=> setAccount({...account, email: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Phone</span>
+                                <label className='text-xs text-gray-500'>Phone <span className='text-red-500'>*</span></label>
                                 <input type="text" onChange={(e)=> setAccount({...account, phone: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                         </div>
                         <div className='flex flex-wrap gap-8 my-4'>
-                        <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Ghana Card</span>
+                            <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
+                                <label className='text-xs text-gray-500'>Ghana Card</label>
                                 <input type="text" onChange={(e)=> setAccount({...account, card: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Date of Birth</span>
-                                <input type="text" onChange={(e)=> setAccount({...account, dateOfBirth: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                <label className='text-xs text-gray-500'>Date of Birth <span className='text-red-500'>*</span></label>
+                                <input type="date" required onChange={(e)=> setAccount({...account, dateOfBirth: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Gender</span>
-                                <input type="text" onChange={(e)=> setAccount({...account, gender: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                <label className='text-xs text-gray-500'>Gender <span className='text-red-500'>*</span></label>
+                                <input type="text" required onChange={(e)=> setAccount({...account, gender: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                             <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Registration Fee</span>
+                                <label className='text-xs text-gray-500'>Registration Fee</label>
                                 <input type="text" onChange={(e)=> setAccount({...account, registration: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                             </div>
                             
@@ -163,29 +218,29 @@ const CreateSavingsAccount = () => {
                         <div>
                             <div className='flex flex-wrap gap-8'>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Country</span>
-                                    <input type="text" onChange={(e)=> setAddress({...address, country: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Country <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setAddress({...address, country: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Region</span>
-                                    <input type="text" onChange={(e)=> setAddress({...address, region: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Region <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setAddress({...address, region: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>City</span>
-                                    <input type="text" onChange={(e)=> setAddress({...address, city: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>City <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setAddress({...address, city: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Home Town</span>
-                                    <input type="text" onChange={(e)=> setAddress({...address, homeTown: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Home Town <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setAddress({...address, homeTown: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                             </div>
                             <div className='flex flex-wrap gap-8 my-4 '>
                                 <div className='flex flex-col gap-2 w-[74%] 2xl:w-[64.5%]'>
-                                    <span className='text-xs text-gray-300'>Residential Address</span>
-                                    <input type="text" onChange={(e)=> setAddress({...address, residentialAddress: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Residential Address <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setAddress({...address, residentialAddress: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Digital</span>
+                                    <label className='text-xs text-gray-500'>Digital</label>
                                     <input type="text" onChange={(e)=> setAddress({...address, digital: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                             </div>
@@ -194,26 +249,26 @@ const CreateSavingsAccount = () => {
                     <div className={` border-t border-gray-200 pt-4`}>
                         <h4 className='font-bold'>Work Information</h4>
                         <div>
-                        <div className='flex flex-wrap gap-8'>
-                            <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Occupation</span>
-                                <input type="text" onChange={(e)=> setWork({...work, occupation: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                            <div className='flex flex-wrap gap-8'>
+                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
+                                    <label className='text-xs text-gray-500'>Occupation <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setWork({...work, occupation: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                </div>
+                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
+                                    <label className='text-xs text-gray-500'>Company</label>
+                                    <input type="text" onChange={(e)=> setWork({...work, company: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                </div>
+                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
+                                    <label className='text-xs text-gray-500'>Employee Number <label>(if applicable)</label></label>
+                                    <input type="text" onChange={(e)=> setWork({...work, employeeId: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                </div>
                             </div>
-                            <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Company</span>
-                                <input type="text" onChange={(e)=> setWork({...work, company: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                            <div className='flex flex-wrap gap-8 my-4 '>
+                                <div className='flex flex-col gap-2 w-[74%] 2xl:w-[64.5%]'>
+                                    <label className='text-xs text-gray-500'>Location/Address </label>
+                                    <input type="text" onChange={(e)=> setWork({...work, location: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                </div>
                             </div>
-                            <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                <span className='text-xs text-gray-300'>Employee Number <span>(if applicable)</span></span>
-                                <input type="text" onChange={(e)=> setWork({...work, employeeId: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
-                            </div>
-                        </div>
-                        <div className='flex flex-wrap gap-8 my-4 '>
-                            <div className='flex flex-col gap-2 w-[74%] 2xl:w-[64.5%]'>
-                                <span className='text-xs text-gray-300'>Location/Address</span>
-                                <input type="text" onChange={(e)=> setWork({...work, location: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
-                            </div>
-                        </div>
                         </div>
                     </div>
                     <div className={` border-t border-gray-200 pt-4`}>
@@ -221,15 +276,15 @@ const CreateSavingsAccount = () => {
                         <div>
                             <div className='flex flex-wrap gap-8 mb-4'>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Marital Status</span>
-                                    <input type="text" onChange={(e)=> setFamily({...family, maritalStatus: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Marital Status <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setFamily({...family, maritalStatus: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Spouse Name</span>
+                                    <label className='text-xs text-gray-500'>Spouse Name</label>
                                     <input type="text" onChange={(e)=> setFamily({...family, spouseName: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>No. of Children</span>
+                                    <label className='text-xs text-gray-500'>No. of Children</label>
                                     <input type="text" onChange={(e)=> setFamily({...family, noOfChildren: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                             </div>
@@ -240,34 +295,45 @@ const CreateSavingsAccount = () => {
                         <div>
                             <div className='flex flex-wrap gap-8'>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>First Name</span>
-                                    <input type="text" onChange={(e)=> setNextOfKing({...nextOfKing, firstname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>First Name <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setNextOfKin({...nextOfKin, firstname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Last Name</span>
-                                    <input type="text" onChange={(e)=> setNextOfKing({...nextOfKing, lastname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Last Name <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setNextOfKin({...nextOfKin, lastname: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Other Names</span>
-                                    <input type="text" onChange={(e)=> setNextOfKing({...nextOfKing, othernames: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Other Names </label>
+                                    <input type="text" onChange={(e)=> setNextOfKin({...nextOfKin, othernames: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Relation</span>
-                                    <input type="text" onChange={(e)=> setNextOfKing({...nextOfKing, relation: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Relation <span className='text-red-500'>*</span></label>
+                                    <input type="text" required list='relation' onChange={(e)=> setNextOfKin({...nextOfKin, relation: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                             </div>
+                            <datalist id='relation'>
+                                <option>Father</option>
+                                <option>Mother</option>
+                                <option>Brother</option>
+                                <option>Sister</option>
+                                <option>Sibling</option>
+                                <option>Nephew</option>
+                                <option>Niece</option>
+                                <option>Cousin</option>
+                                <option>Guardian</option>
+                            </datalist>
                             <div className='flex flex-wrap gap-8 my-4 '>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Phone</span>
-                                    <input type="text" onChange={(e)=> setNextOfKing({...nextOfKing, phone: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Phone <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setNextOfKin({...nextOfKin, phone: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Occupation</span>
-                                    <input type="text" onChange={(e)=> setNextOfKing({...nextOfKing, occupation: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Occupation <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setNextOfKin({...nextOfKin, occupation: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-[44%]'>
-                                    <span className='text-xs text-gray-300'>Residential Address</span>
-                                    <input type="text" onChange={(e)=> setNextOfKing({...nextOfKing, residentialAddress: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <label className='text-xs text-gray-500'>Residential Address <span className='text-red-500'>*</span></label>
+                                    <input type="text" required onChange={(e)=> setNextOfKin({...nextOfKin, residentialAddress: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 
                             </div>

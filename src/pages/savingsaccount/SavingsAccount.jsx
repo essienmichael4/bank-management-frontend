@@ -35,14 +35,17 @@ const SavingsAccount = () => {
           isMounted && setAccount(response.data) 
           
         }catch(err){
-          console.log(err);
+          if(err.response){
+            toast.error(err.response.data.error)
+            navigate("../savings")
+          }
         }
 
         // !account.firstname && navigate("../savings")
-        if(!account.firstname){
-          toast.error("Account does not exist")
-          navigate("../savings")
-        }
+        // if(!account.firstname){
+        //   toast.error("Account does not exist")
+        //   navigate("../savings")
+        // }
       }
 
       getAccounts()
@@ -125,7 +128,7 @@ const SavingsAccount = () => {
                 <div className='flex flex-wrap gap-8'>
                     <div>
                         <span className='text-xs text-gray-300'>Account Balance</span>
-                        <p>{account.balance}</p>
+                        <p>GH¢ {account.balance}</p>
                     </div>
                     <div>
                         <span className='text-xs text-gray-300'>Account Number</span>
@@ -233,23 +236,23 @@ const SavingsAccount = () => {
                     <div className='flex gap-8 flex-wrap'>
                         <div>
                             <span className='text-xs text-gray-300 '>Name</span>
-                            <p>{account.nextOfKing?.firstname} {account.nextOfKing?.lastname} {account.nextOfKing?.othernames}</p>
+                            <p>{account.nextOfKin?.firstname} {account.nextOfKing?.lastname} {account.nextOfKing?.othernames}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Relation</span>
-                            <p>{account.nextOfKing?.relation}</p>
+                            <p>{account.nextOfKin?.relation}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Phone</span>
-                            <p>{account.nextOfKing?.phone}</p>
+                            <p>{account.nextOfKin?.phone}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Occupation</span>
-                            <p>{account.nextOfKing?.occupation}</p>
+                            <p>{account.nextOfKin?.occupation}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Residential Address</span>
-                            <p>{account.nextOfKing?.residentialAddress}</p>
+                            <p>{account.nextOfKin?.residentialAddress}</p>
                         </div>
                     </div>
                 </div>
@@ -266,7 +269,7 @@ const SavingsAccount = () => {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>{transactionCount} accounts found</span>
+              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2 text-gray-300'>{transactions.length} transactions found</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='border flex items-center gap-2 border-gray-300 p-1 rounded-lg'>

@@ -32,11 +32,11 @@ function Loan() {
 
     const getAccounts = async() => {
       try{
-        const response = await axiosPrivateNew.get("/saving/accounts", {signal: controller.signal})
+        const response = await axiosPrivateNew.get("/loan/accounts", {signal: controller.signal})
         console.log(response.data);
         console.log(response.data.count._count.id)
         setCountLoans(response.data.count._count.id)
-        isMounted && setLoans(response.data.accounts) 
+        isMounted && setLoans(response.data.loans) 
       }catch(err){
         console.log(err);
       }
@@ -63,7 +63,10 @@ function Loan() {
           <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
             <img className='w-4 h-4 ' src={close} alt="" />
           </button>
-          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
+          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'>
+            <input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/>
+            <button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
+          </button></div>
           <form className='mt-4 flex flex-col gap-2'>
             <h5 className='font-bold'>Account Details</h5>
             <div className='flex flex-col gap-2'>
@@ -162,12 +165,12 @@ function Loan() {
                         <span className='-mt-2 text-xs text-gray-300'>{loan.email}</span>
                       </div>
                     </td>
-                      <td className='py-6 text-sm'>¢ {loan.loanDetail.amount}</td>
+                      <td className='py-6 text-sm'>¢ {loan?.loanDetail?.amount}</td>
                       <td className='py-6 text-sm'>¢ {loan.balance}</td>
                       <td className='py-6 text-sm'>{loan.phone ? loan.phone : "-"}</td>
                       <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {loan.status} </span> </td>
-                      <td className='py-6 text-sm'>{new Date(loan.loanDetail.dueAt).toDateString()}</td>
-                      <td className='py-6 text-sm'>{loan.loanDetail.modeOfPayment}</td>
+                      <td className='py-6 text-sm'>{new Date(loan?.loanDetail?.dueAt).toDateString()}</td>
+                      <td className='py-6 text-sm'>{loan?.loanDetail?.modeOfPayment}</td>
                     </tr>
                   })}
                 </tbody>
