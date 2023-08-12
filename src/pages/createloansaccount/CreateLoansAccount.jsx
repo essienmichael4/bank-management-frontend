@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import arrowleft from '../../assets/arrowleft.svg'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import useAxios from '../../hooks/useAxios'
 import search from '../../assets/search.svg'
 
 const CreateLoansAccount = () => {
     const navigate = useNavigate()
     const axiosPrivateNew = useAxios()
+    const [guarantedAmount, setGuarantedAmount] = useState(0)
 
     const [allAccounts,setAllAccounts] = useState([])
 
@@ -49,11 +51,15 @@ const CreateLoansAccount = () => {
         lastname: "",
         othernames: "",
         dateOfBirth: "",
-        registration: "",
-        accountStatus: "ACTIVE",
         gender: "",
         card: "",
-        purpose: ""
+        purpose: "",
+        status: "PENDING"
+    })
+    const [sponsor, setSponsor] = useState({
+        accountNumber: "",
+        name: "",
+        id: ""
     })
 
     useEffect( ()=>{
@@ -100,6 +106,8 @@ const CreateLoansAccount = () => {
         let interest = (parseFloat(amount) * (parseFloat(interestPercent) / 100))
         let totalAmount =  (parseFloat(amount) + parseFloat(interest))
 
+        setGuarantedAmount(totalAmount / guarantors.length)
+
         setLoanDetail({
             ...loanDetail,
             interestPercent: e.target.value,
@@ -115,15 +123,74 @@ const CreateLoansAccount = () => {
         let interest = (parseFloat(amount) * (parseFloat(interestPercent) / 100))
         let totalAmount =  (parseFloat(amount) + parseFloat(interest))
 
+        setGuarantedAmount(totalAmount / guarantors.length)
+
         setLoanDetail({
             ...loanDetail,
             amount: e.target.value,
             interest: interest,
             totalAmount: totalAmount
         })
+
+      }
+
+      const findAccountByName = (name, i)=>{
+        let acc = allAccounts.filter(acc =>{
+                let names = name.split(" ")
+
+                if(names.length === 2) names.push("")
+                
+                if( acc.firstname == names[0] && acc.lastname ==names[1] && acc.othernames == names[2] ){
+                    return acc
+                }
+            })
+            console.log(acc);
+            console.log(i);
+        const onChangeValue = [...guarantors]
+        onChangeValue[i]['accountNumber'] = acc[0].account
+        onChangeValue[i]['id'] = acc[0].id
+        setGuarantors(onChangeValue)
+        // console.log(guarantors);
+      }
+
+      const findAccountByNumber = (number, i)=>{
+        let acc = allAccounts.filter(acc => number === acc.account)
+        
+        const onChangeValue = [...guarantors]
+        onChangeValue[i]['id'] = acc[0].id
+        onChangeValue[i]['name'] = `${acc[0].firstname} ${acc[0].lastname} ${acc[0].othernames}`
+        setGuarantors(onChangeValue)
+      }
+
+      const findSponserByName = (name)=>{
+        let acc = allAccounts.filter(acc =>{
+            let names = name.split(" ")
+
+            if(names.length === 2) names.push("")
+            
+            if( acc.firstname == names[0] && acc.lastname ==names[1] && acc.othernames == names[2] ){
+                return acc
+            }
+        })
+
+        setSponsor({
+            accountNumber: acc[0].account,
+            name: name,
+            id: acc[0].id
+        })
+      }
+
+      const findSponserByAccountNumber = (number)=>{
+        let acc = allAccounts.filter(acc => number === acc.account)
+        setSponsor({
+            accountNumber: number,
+            name: `${acc[0].firstname} ${acc[0].lastname} ${acc[0].othernames}`,
+            id: acc[0].id
+        })
       }
 
       const handleAddNewGuarantor = ()=> {
+        setGuarantedAmount(loanDetail.totalAmount / guarantors.length)
         setGuarantors([...guarantors, {
                 accountNumber: "",
                 name: "",
@@ -139,6 +206,85 @@ const CreateLoansAccount = () => {
         onChangeValue[i][name] = value
         setGuarantors(onChangeValue)
       }
+
+    const handleSubmit = async(e)=>{
+        e.preventDefault()
+
+        const newAccount = {
+            ...account,
+            sponsor: sponsor.id,
+            work: work,
+            address: address,
+            guarantor: guarantors.map((guarantor) => {
+                return {
+                    savingId: guarantor.id,
+                    amount: loanDetail.amount / guarantors.length
+                }
+            }),
+            loanDetail: loanDetail
+        }
+
+        try{
+            const response = await axiosPrivateNew.post("/loan/account",
+             JSON.stringify(newAccount)
+            );
+            console.log(response.data);
+            setWork({
+                employeeId: "",
+                occupation: "",
+                company: "",
+                location: ""
+            }) 
+            setLoanDetail({
+                amount: 0,
+                interest: 0,
+                interestPercent:0,
+                appliedAt: "",
+                dueAt: "",
+                modeOfPayment: "",
+                totalAmount: 0,
+                state: "NEW"
+            })
+            setGuarantors([{
+                accountNumber: "",
+                name: "",
+                amountGuaranteed: "",
+                id: ""
+            }])
+            setAddress({
+                residentialAddress: "",
+                homeTown: "",
+                city: "",
+                region: "",
+                country: "",
+                nationality: "",
+                digital: ""
+            })            
+            setAccount({
+                account: "",
+                email: "",
+                phone: "",
+                firstname: "",
+                lastname: "",
+                othernames: "",
+                dateOfBirth: "",
+                status: "",
+                gender: "",
+                card: "",
+            })
+            toast.error("Loan Applied Successfully")
+            navigate("bms/loans")
+          }catch(err){
+            console.log(err.response);
+            if(!err.response){
+              toast.error("Server not found")
+            }else{
+              toast.error(err.response.data.error)
+            }
+          }
+
+        console.log(newAccount);
+    }
 
     return (
         <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
@@ -162,7 +308,7 @@ const CreateLoansAccount = () => {
               </div>
             </div>
             <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
-                <form className='pt-4 px-4'>
+                <form className='pt-4 px-4' onSubmit={handleSubmit}>
                     <h3 className=''>Personal Information</h3>
                     <div>
                         <div className='flex flex-wrap gap-8'>
@@ -222,41 +368,43 @@ const CreateLoansAccount = () => {
                                     <label className='text-xs text-gray-500'>Amount Requested <span className='text-red-500'>*</span></label>
                                     <input type="number"
                                         required 
-                                        onChange={ handleAmountChange } className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                        onChange={ handleAmountChange } 
+                                        className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Interest Percentage <span className='text-red-500'>*</span></label>
                                     <input type="number" 
                                         required 
-                                        onChange={ handleInerestPercentChange } className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                        onChange={ handleInerestPercentChange } 
+                                        className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Interest <span className='text-red-500'>*</span></label>
                                     <input type="text" 
                                         value={loanDetail.interest}
                                         disabled 
-                                        onChange={(e)=> setAddress({...address, city: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                        onChange={(e)=> setLoanDetail({...loanDetail, interest: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Amount to be paid <span className='text-red-500'>*</span></label>
                                     <input type="text" 
                                         value={loanDetail.totalAmount}
                                         disabled 
-                                        onChange={(e)=> setAddress({...address, city: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                        onChange={(e)=> setLoanDetail({...loanDetail, totalAmount: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                             </div>
                             <div className='flex flex-wrap gap-8 my-4 '>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Day Applied</label>
-                                    <input type="date" onChange={(e)=> setAddress({...address, digital: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <input type="date" value={loanDetail.appliedAt} onChange={(e)=> setLoanDetail({...loanDetail, appliedAt: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Due Date</label>
-                                    <input type="date" onChange={(e)=> setAddress({...address, digital: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <input type="date" value={loanDetail.dueAt} onChange={(e)=> setLoanDetail({...loanDetail, dueAt: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Mode of Payment <span className='text-red-500'>*</span></label>
-                                    <input type="text" required onChange={(e)=> setAddress({...address, homeTown: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <input type="text" required onChange={(e)=> setLoanDetail({...loanDetail, modeOfPayment: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                             </div>
                         </div>
@@ -265,7 +413,11 @@ const CreateLoansAccount = () => {
                         <h4 className='font-bold'>Address</h4>
                         <div>
                             <div className='flex flex-wrap gap-8'>
-                            <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
+                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
+                                    <label className='text-xs text-gray-500'>Nationality</label>
+                                    <input type="text" value={address.nationality} onChange={(e)=> setAddress({...address, nationality: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                </div>
+                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Country <span className='text-red-500'>*</span></label>
                                     <input type="text" required onChange={(e)=> setAddress({...address, country: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
@@ -277,20 +429,25 @@ const CreateLoansAccount = () => {
                                     <label className='text-xs text-gray-500'>City <span className='text-red-500'>*</span></label>
                                     <input type="text" required onChange={(e)=> setAddress({...address, city: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
+                                
+                            </div>
+                            
+                            <div className='flex flex-wrap gap-8 my-4 '>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Home Town <span className='text-red-500'>*</span></label>
                                     <input type="text" required onChange={(e)=> setAddress({...address, homeTown: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
-                            </div>
-                            <div className='flex flex-wrap gap-8 my-4 '>
-                                <div className='flex flex-col gap-2 w-[74%] 2xl:w-[64.5%]'>
+                                <div className='flex flex-col gap-2 w-[54%] 2xl:w-[64.5%]'>
                                     <label className='text-xs text-gray-500'>Residential Address <span className='text-red-500'>*</span></label>
                                     <input type="text" required onChange={(e)=> setAddress({...address, residentialAddress: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <label className='text-xs text-gray-500'>Digital</label>
-                                    <input type="text" onChange={(e)=> setAddress({...address, digital: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
+                                    <input type="text" value={address.digital} onChange={(e)=> setAddress({...address, digital: e.target.value})} className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                 </div>
+                                
+                            </div>
+                            <div className='flex flex-wrap gap-8 my-4 '>
                             </div>
                         </div>
                     </div>
@@ -338,7 +495,7 @@ const CreateLoansAccount = () => {
                                                  onChange={(e)=>handleGuarantorChange(e,i)}
                                                  className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' 
                                                  placeholder='Search by account no.'/>
-                                                <button type='button' className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
+                                                <button type='button' onClick={()=>findAccountByNumber(guarantor.accountNumber, i)} className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
                                                 </button>
                                             </div>
                                         </div>
@@ -352,7 +509,7 @@ const CreateLoansAccount = () => {
                                                  onChange={(e)=>handleGuarantorChange(e,i)}
                                                  className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' 
                                                  placeholder='Search by name'/>
-                                                <button type='button' className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
+                                                <button type='button' onClick={()=>findAccountByName(guarantor.name, i)} className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
                                                 </button>
                                             </div>
                                         </div>
@@ -360,8 +517,9 @@ const CreateLoansAccount = () => {
                                             <span className='text-xs text-gray-300'>Amount Guaranteed</span>
                                             <input type="text" 
                                              name='amountGuaranteed'
-                                             value={guarantor.amountGuaranteed}
-                                             onChange={(e)=>handleGuarantorChange(e,i)}
+                                             value={guarantedAmount}
+                                             disabled
+                                            //  onChange={(e)=>handleGuarantorChange(e,i)}
                                              className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                         </div>
                                     </div> 
@@ -398,16 +556,16 @@ const CreateLoansAccount = () => {
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <span className='text-xs text-gray-300'>Sponsor Account</span>
                                     <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'>
-                                        <input type="text" list='accountNumbers' className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' placeholder='Search by account no.'/>
-                                        <button type='button' className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
+                                        <input type="text" value={sponsor.accountNumber} list='accountNumbers' onChange={(e) =>setSponsor({...sponsor, accountNumber: e.target.value})} className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' placeholder='Search by account no.'/>
+                                        <button type='button' onClick={()=>findSponserByAccountNumber(sponsor.accountNumber)} className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
                                         </button>
                                     </div>
                                 </div>
                                 <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
                                     <span className='text-xs text-gray-300'>Sponsor Name</span>
                                     <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'>
-                                        <input type="text" list='accountNames' className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' placeholder='Search by name'/>
-                                        <button type='button' className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
+                                        <input type="text" value={sponsor.name} list='accountNames' onChange={(e) =>setSponsor({...sponsor, name: e.target.value})} className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' placeholder='Search by name'/>
+                                        <button type='button' onClick={()=>findSponserByName(sponsor.name)} className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
                                         </button>
                                     </div>
                                 </div>

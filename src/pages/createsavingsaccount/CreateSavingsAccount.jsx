@@ -81,7 +81,6 @@ const CreateSavingsAccount = () => {
     const handleSubmit = async (e)=>{
         e.preventDefault()
 
-
         const newAccount = {
             ...account,
             work: work,

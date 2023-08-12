@@ -29,8 +29,6 @@ const SavingsAccount = () => {
         try{
           const response = await axiosPrivateNew.get(`/saving/account/${id}`, {signal: controller.signal})
           console.log(response.data);
-          // console.log(response.data.count._count.id)
-          // setCountAccount(response.data.count._count.id)
           setTransactions(response.data.transactions) 
           isMounted && setAccount(response.data) 
           
@@ -40,12 +38,6 @@ const SavingsAccount = () => {
             navigate("../savings")
           }
         }
-
-        // !account.firstname && navigate("../savings")
-        // if(!account.firstname){
-        //   toast.error("Account does not exist")
-        //   navigate("../savings")
-        // }
       }
 
       getAccounts()
@@ -65,6 +57,7 @@ const SavingsAccount = () => {
     }
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
+      
       <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
         <div className='py-4 px-2'>
           <h4>Make Transaction</h4>

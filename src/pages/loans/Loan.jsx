@@ -12,7 +12,14 @@ import axios from '../../api/axios'
 function Loan() {
   const [showTransaction, setShowTransaction] = useState(false)
   const [overview, setOverview] = useState([])
+  const [transaction, setTransaction] = useState({
+    accountNumber: "",
+    transactionType: "LOAN_PAYMENT",
+    transactedAmount: ""
+  })
   const [loans, setLoans] = useState([])
+  const [accountNumber, setAccountNumber] = useState()
+  const [loanAccount, setLoanAccount] = useState({})
   const [countLoans,setCountLoans] = useState()
   const axiosPrivateNew = useAxios()
 
@@ -51,40 +58,68 @@ function Loan() {
     }
   },[])
 
+  const findAccountByNumber = (number)=>{
+    console.log(number);
+    let acc = loans.filter(acc => number === acc.account)
+    console.log(acc);
+    setLoanAccount(acc[0])
+    setTransaction({...transaction, accountNumber:acc[0].account, transactedAmount: ""})
+  }
+
   function handleShowTransaction(){
     setShowTransaction(!showTransaction)
   }
 
+  const makeTransaction = (e)=>{
+    e.preventDefault()
+    console.log(transaction);
+  }
+
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
+      <datalist id='accountNumbers'>
+            {loans.map(accountNum => {
+                return (<option>{accountNum.account}</option>)
+            })}
+          </datalist>
       <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
         <div className='py-4 px-2'>
           <h4>Loans Payment</h4>
-          <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
+          <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-6 lg:right-0 lg:top-2 '>
             <img className='w-4 h-4 ' src={close} alt="" />
           </button>
           <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'>
-            <input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/>
-            <button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
-          </button></div>
-          <form className='mt-4 flex flex-col gap-2'>
+            <input type="text" 
+              list='accountNumbers'
+              className='p-1 outline-0 flex-1' 
+              value={accountNumber}
+              onChange={(e)=>{
+                setAccountNumber(e.target.value)
+              }} 
+              placeholder='Search account'/>
+            <button className='h-8 w-8 bg-blue-100 rounded p-1' 
+             onClick={() => findAccountByNumber(accountNumber)}
+            >
+              <img src={search} className='' alt="" />
+            </button></div>
+          <form onSubmit={makeTransaction} className='mt-4 flex flex-col gap-2'>
             <h5 className='font-bold'>Account Details</h5>
             <div className='flex flex-col gap-2'>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Number</span>
-                <p className='m-0'>1071010148099</p>
+                <p className='m-0'>{loanAccount?.account ? loanAccount.account : `-`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Name</span>
-                <p className='m-0'>Michael Essien Amoodu</p>
+                <p className='m-0'>{loanAccount?.firstname ? `${loanAccount?.firstname} ${loanAccount?.lastname} ${loanAccount?.othernames}` : `-`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Status</span>
-                <span>Active</span>
+                {loanAccount?.status ? <span> {loanAccount.status} </span> : <span>-</span>}
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Balance</span>
-                <p className='m-0'>GH¢ 200,000.00</p>
+                <p className='m-0'>{loanAccount?.balance ? `GH¢ ${loanAccount.balance}` : `-`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Transaction Type</span>
@@ -92,7 +127,10 @@ function Loan() {
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Transacted Amount</span>
-                <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+                <input type="text" 
+                  value={transaction.transactedAmount} 
+                  onChange={e =>{setTransaction({...transaction, transactedAmount:e.target.value})}}
+                 className='border border-gray-300 p-2 outline-0 rounded-lg'/>
               </div>
             </div>
               <button className='w-full rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Loan Transaction</button>
@@ -154,24 +192,26 @@ function Loan() {
                 </thead>
                 <tbody>
                   {loans.map(loan=>{
-                    <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                      <td className='px-2 py-6 text-sm'>#{loan.account}</td>
-                      <td className='py-4 text-sm flex items-center gap-2'>
-                      <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
-                        <img className='w-4 h-4' src={users} alt="" />
-                      </div>
-                      <div>
-                        <p className='-mb-1 font-medium'>{loan.firstname} {loan.lastname} {loan.othernames}</p>
-                        <span className='-mt-2 text-xs text-gray-300'>{loan.email}</span>
-                      </div>
-                    </td>
-                      <td className='py-6 text-sm'>¢ {loan?.loanDetail?.amount}</td>
-                      <td className='py-6 text-sm'>¢ {loan.balance}</td>
-                      <td className='py-6 text-sm'>{loan.phone ? loan.phone : "-"}</td>
-                      <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {loan.status} </span> </td>
-                      <td className='py-6 text-sm'>{new Date(loan?.loanDetail?.dueAt).toDateString()}</td>
-                      <td className='py-6 text-sm'>{loan?.loanDetail?.modeOfPayment}</td>
-                    </tr>
+                    return(
+                      <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                        <td className='px-2 py-6 text-sm'>#{loan.account}</td>
+                        <td className='py-4 text-sm flex items-center gap-2'>
+                        <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
+                          <img className='w-4 h-4' src={users} alt="" />
+                        </div>
+                        <div>
+                          <p className='-mb-1 font-medium'>{loan.firstname} {loan.lastname} {loan.othernames}</p>
+                          <span className='-mt-2 text-xs text-gray-300'>{loan.email}</span>
+                        </div>
+                      </td>
+                        <td className='py-6 text-sm'>¢ {loan?.loanDetail?.amount}</td>
+                        <td className='py-6 text-sm'>¢ {loan.balance}</td>
+                        <td className='py-6 text-sm'>{loan.phone ? loan.phone : "-"}</td>
+                        <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {loan.status} </span> </td>
+                        <td className='py-6 text-sm'>{new Date(loan?.loanDetail?.dueAt).toDateString()}</td>
+                        <td className='py-6 text-sm'>{loan?.loanDetail?.modeOfPayment}</td>
+                      </tr>
+                    )
                   })}
                 </tbody>
               </table>

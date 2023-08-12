@@ -12,6 +12,13 @@ function Savings() {
   const [showTransaction, setShowTransaction] = useState(false)
   const [overview, setOverview] = useState([])
   const [accounts,setAccounts] = useState([])
+  const [transaction, setTransaction] = useState({
+    accountNumber: "",
+    transactionType: "DEPOSITE",
+    transactedAmount: ""
+  })
+  const [accountNumber, setAccountNumber] = useState()
+  const [savingAccount,setSavingAccount] = useState({})
   const [countAccount, setCountAccount] = useState()
   const axiosPrivateNew = useAxios()
   const navigate = useNavigate()
@@ -49,55 +56,82 @@ function Savings() {
       isMounted = false
       controller.abort()
     }
-  },[])
+  },[axiosPrivateNew])
+
+  const findAccountByNumber = (number)=>{
+    let acc = accounts.filter(acc => number === acc.account)
+    
+    setSavingAccount(acc[0])
+    setTransaction({accountNumber:acc[0].account, transactedAmount: "",transactionType: "DEPOSITE"})
+  }
 
   function handleShowTransaction(){
     setShowTransaction(!showTransaction)
   }
 
-  // const handleClick = (id)=>{
-  //   navigate(`/${id}`)
-  // }
+  const makeTransaction = (e)=>{
+    e.preventDefault()
+    console.log(transaction);
+  }
 
 
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
+      <datalist id='accountNumbers'>
+            {accounts.map(accountNum => {
+                return (<option>{accountNum.account}</option>)
+            })}
+          </datalist>
       <div className={`${!showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
         <div className='py-4 px-2'>
           <h4>Make Transaction</h4>
-          <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
+          <button onClick={handleShowTransaction} className='p-1 absolute right-2 top-6 lg:right-0 lg:top-2'>
             <img className='w-4 h-4 ' src={close} alt="" />
           </button>
-          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
-          <form className='mt-4 flex flex-col gap-2'>
+          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'>
+            <input type="text" 
+              list='accountNumbers'
+              className='p-1 outline-0 flex-1' 
+              value={accountNumber}
+              onChange={(e)=>{
+                setAccountNumber(e.target.value)
+              }} 
+              placeholder='Search account'/>
+            <button className='h-8 w-8 bg-blue-100 rounded p-1'  onClick={()=>findAccountByNumber(accountNumber)}>
+              <img src={search} className='' alt="" />
+            </button>
+          </div>
+          <form className='mt-4 flex flex-col gap-2' onSubmit={makeTransaction}>
             <h5 className='font-bold'>Account Details</h5>
             <div className='flex flex-col gap-4'>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Number</span>
-                <p className='m-0'>1071010148099</p>
+                <p className='m-0'>{savingAccount?.account ? savingAccount.account : `-`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Name</span>
-                <p className='m-0'>Michael Essien Amoodu</p>
+                <p className='m-0'>{savingAccount?.firstname ? `${savingAccount?.firstname} ${savingAccount?.lastname} ${savingAccount?.othernames}` : `-`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Status</span>
-                <span>Active</span>
+                <span>{savingAccount?.status && savingAccount.status}</span>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Balance</span>
-                <p className='m-0'>GH¢ 200,000.00</p>
+                <p className='m-0'>{savingAccount?.balance ? `GH¢ ${savingAccount.balance}` : `-`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-sm text-gray-500'>Transaction Type</span>
-                <select name="" id="">
-                  <option value="Deposite">Deposite</option>
-                  <option value="Debit">Debit</option>
+                <select name="" id="" value={transaction.transactionType} onChange={(e)=>{
+                  setTransaction({...transaction, transactionType:e.target.value})
+                }}>
+                  <option value="DEPOSITE">Deposite</option>
+                  <option value="DEBIT">Debit</option>
                 </select>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Transacted Amount</span>
-                <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+                <input type="text" value={transaction.transactedAmount} onChange={e =>{setTransaction({...transaction, transactedAmount:e.target.value})}} className='border border-gray-300 p-2 outline-0 rounded-lg'/>
               </div>
             </div>
             <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>

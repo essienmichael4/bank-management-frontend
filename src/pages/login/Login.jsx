@@ -57,7 +57,7 @@ function Login() {
         lg:h-full lg:rounded-t-none'>
           <form className='md:w-full xl:w-[60%]' onSubmit={loginUser}>
             <h1>Login</h1>
-            <p className='text-xs mb-3 md:mb-8'>The faster you type, the faster you manage your stuff</p>
+            <p className='text-xs mb-3 md:mb-8 text-gray-400' >The faster you type, the faster you manage your stuff</p>
             <div className="form-control flex flex-col gap-2">
               <label htmlFor="username">Email or Username</label>
               <input type="text" onChange={(e)=>{
@@ -95,7 +95,7 @@ function Login() {
             </div>
             <div className='flex justify-between mt-1'>
               <p className='text-xs text-gray-300 mb-0'>Minimum 8 characters</p>
-              <a className='text-blue-400 text-xs md:text-sm'>forgot password</a>
+              <a className='text-blue-400 text-xs md:text-xs'>forgot password</a>
             </div>
             <div className='flex justify-between mb-3 mt-0 md:mb-8'>
             <p className='text-red-400 text-xs md:text-sm'> 
@@ -103,8 +103,8 @@ function Login() {
             </div>
             <button className='rounded-full bg-blue-300 w-full text-white py-2 hover:bg-blue-500'>Login</button>
             <div className='flex gap-2 mb-3 mt-1'>
-              <p className='text-red-400 text-xs md:text-sm md:text-sm'>Don't have an account?</p>
-              <a className=' text-xs md:text-sm md:text-sm'>Contact your manager.</a>
+              <p className='text-red-400 text-xs'>Don't have an account?</p>
+              <a className=' text-xs '>Contact your manager.</a>
             </div>
           </form>
         </div>
