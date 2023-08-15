@@ -274,16 +274,13 @@ const CreateLoansAccount = () => {
             })
             toast.error("Loan Applied Successfully")
             navigate("bms/loans")
-          }catch(err){
-            console.log(err.response);
+        }catch(err){
             if(!err.response){
               toast.error("Server not found")
             }else{
               toast.error(err.response.data.error)
             }
-          }
-
-        console.log(newAccount);
+        }
     }
 
     return (

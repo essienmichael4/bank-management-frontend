@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import Overview from '../../components/overview/Overview'
 import users from '../../assets/users.svg'
 import refresh from '../../assets/refresh.svg'
@@ -70,9 +71,22 @@ function Loan() {
     setShowTransaction(!showTransaction)
   }
 
-  const makeTransaction = (e)=>{
+  const makeTransaction = async (e)=>{
     e.preventDefault()
     console.log(transaction);
+    try{
+      const response = await axiosPrivateNew.post("/transactions",
+       JSON.stringify(transaction)
+      );
+      console.log(response.data);
+      toast.success(response.data.message)
+    }catch(err){
+      if(!err.response){
+        toast.error("Server not found")
+      }else{
+        toast.error(err.response.data.error)
+      }
+    }
   }
 
   return (
@@ -119,7 +133,7 @@ function Loan() {
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Balance</span>
-                <p className='m-0'>{loanAccount?.balance ? `GH¢ ${loanAccount.balance}` : `-`}</p>
+                <p className='m-0'>{loanAccount?.balance ? `GH¢ ${loanAccount.balance}` : `GH¢ 0.00`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Transaction Type</span>

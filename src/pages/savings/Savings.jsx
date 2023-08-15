@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 import Overview from '../../components/overview/Overview'
 import users from '../../assets/users.svg'
 import refresh from '../../assets/refresh.svg'
@@ -41,7 +42,6 @@ function Savings() {
       try{
         const response = await axiosPrivateNew.get("/saving/accounts", {signal: controller.signal})
         console.log(response.data.accounts);
-        // console.log(response.data.count._count.id)
         setCountAccount(response.data.count._count.id)
         isMounted && setAccounts(response.data.accounts) 
       }catch(err){
@@ -69,19 +69,32 @@ function Savings() {
     setShowTransaction(!showTransaction)
   }
 
-  const makeTransaction = (e)=>{
+  const makeTransaction = async (e)=>{
     e.preventDefault()
     console.log(transaction);
+    try{
+      const response = await axiosPrivateNew.post("/transactions",
+       JSON.stringify(transaction)
+      );
+      console.log(response.data);
+      toast.success(response.data.message)
+    }catch(err){
+      if(!err.response){
+        toast.error("Server not found")
+      }else{
+        toast.error(err.response.data.error)
+      }
+    }
   }
 
 
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
       <datalist id='accountNumbers'>
-            {accounts.map(accountNum => {
-                return (<option>{accountNum.account}</option>)
-            })}
-          </datalist>
+        {accounts.map(accountNum => {
+            return (<option>{accountNum.account}</option>)
+        })}
+      </datalist>
       <div className={`${!showTransaction && 'hidden'} w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
         <div className='py-4 px-2'>
           <h4>Make Transaction</h4>
@@ -114,11 +127,11 @@ function Savings() {
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Status</span>
-                <span>{savingAccount?.status && savingAccount.status}</span>
+                {savingAccount?.status ? <span> {savingAccount.status} </span> : <span>-</span>}
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Balance</span>
-                <p className='m-0'>{savingAccount?.balance ? `GH¢ ${savingAccount.balance}` : `-`}</p>
+                <p className='m-0'>{savingAccount?.balance ? `GH¢ ${savingAccount.balance}` : `GH¢ 0.00`}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-sm text-gray-500'>Transaction Type</span>

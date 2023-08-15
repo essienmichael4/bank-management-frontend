@@ -144,17 +144,19 @@ function Dashboard() {
                 {transactions.map((transaction)=>{
                   return (
                     <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                  <td className='px-2 py-4 text-sm'>#{transaction.id}</td>
+                  <td className='px-2 py-4 text-sm'>#{transaction.receipt}</td>
                   <td className='py-4 text-sm flex items-center gap-2'>
                     
-                    <div>
+                    
                       {transaction.account && 
                         <>
                           <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
                             <img className='w-4 h-4' src={users} alt="" />
                           </div>
-                          <p className='-mb-1 font-medium'>{transaction.account.firstname} {transaction.account.lastname} {transaction.account.othernames}</p>
-                          <span className='-mt-2 text-xs text-gray-300'>{transaction.account.email}</span>
+                          <div>
+                            <p className='-mb-1 font-medium'>{transaction.account.firstname} {transaction.account.lastname} {transaction.account.othernames}</p>
+                            <span className='-mt-2 text-xs text-gray-300'>{transaction.account.email}</span>
+                          </div>
                         </>
                       }
                       {transaction.savingAccount && 
@@ -162,14 +164,16 @@ function Dashboard() {
                           <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
                             <img className='w-4 h-4' src={users} alt="" />
                           </div>
-                          <p className='-mb-1 font-medium'>{transaction.savingAccount.firstname} {transaction.savingAccount.lastname} {transaction.savingAccount.othernames}</p>
-                          <span className='-mt-2 text-xs text-gray-300'>{transaction.savingAccount.email}</span>
+                          <div>
+                            <p className='-mb-1 font-medium'>{transaction.savingAccount.firstname} {transaction.savingAccount.lastname} {transaction.savingAccount.othernames}</p>
+                            <span className='-mt-2 text-xs text-gray-300'>{transaction.savingAccount.email}</span>
+                          </div>
                         </>
                       }
-                    </div>
+                    
                   </td>
                   <td className='py-4 text-sm'>¢ {transaction.amount}</td>
-                  <td className='py-4 text-sm'>{new Date(transaction.createdAt)}</td>
+                  <td className='py-4 text-sm'>{new Date(transaction.createdAt).toDateString()}</td>
                   <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {transaction.type} </span> </td>
                   <td className='py-4 text-sm'>{transaction.user.firstname} {transaction.user.lastname} {transaction.user.othernames}</td>
                 </tr>
