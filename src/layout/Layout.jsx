@@ -54,7 +54,7 @@ function Layout() {
                 </ul>
             </nav>
         </aside>
-        <main className={`${isToggled && 'active'} bg-gray-100`}>
+        <main className={`${isToggled && 'active'} bg-gray-100 relative min-h-[100vh]`}>
             <header className='sticky top-0 bg-white shadow  z-10'>
                 <div className='hidden cursor-pointer lg:flex items-center justify-center absolute w-6 h-6 left-[-.8rem] top-4 2xl:top-6 z-2 bg-white p border border-gray-300 rounded-full' onClick={toggleMenu}>
                     <img src={arrow} className={`${!isToggled && 'active'} w-4 h-4 arrow`} alt="" />
@@ -87,8 +87,8 @@ function Layout() {
                     </div>
                 </div>
             </header>
-            <section>
-                <div className='w-full max-w-[1880px] mx-auto z-0 py-0 px-4'>
+            <section >
+                <div className='w-full max-w-[1880px]  mx-auto z-0 py-0 px-4'>
                     <Outlet />
                 </div>
             </section>

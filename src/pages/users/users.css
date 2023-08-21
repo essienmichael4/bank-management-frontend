@@ -1,0 +1,8 @@
+.modal{
+    background-color: rgba(0, 0, 0, .7);
+    @apply absolute top-[3rem] md:top-[5rem] left-0 right-0 bottom-[-15rem] md:bottom-0 hidden
+}
+
+.modal.active{
+    @apply flex items-center justify-center
+}
