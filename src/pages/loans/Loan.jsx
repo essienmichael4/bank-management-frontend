@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import Overview from '../../components/overview/Overview'
 import users from '../../assets/users.svg'
@@ -19,10 +19,12 @@ function Loan() {
     transactedAmount: ""
   })
   const [loans, setLoans] = useState([])
+  const [shownAccounts,setShownAccounts] = useState([])
   const [accountNumber, setAccountNumber] = useState()
   const [loanAccount, setLoanAccount] = useState({})
   const [countLoans,setCountLoans] = useState()
   const axiosPrivateNew = useAxios()
+  const navigate = useNavigate()
 
   useEffect( ()=>{
     let isMounted = true
@@ -31,7 +33,6 @@ function Loan() {
     const getOverview = async() => {
       try{
         const response = await axios.get("/overview/loans", {signal: controller.signal})
-        console.log(response.data);
         isMounted && setOverview(response.data)
       }catch(err){
         console.log(err);
@@ -41,9 +42,8 @@ function Loan() {
     const getAccounts = async() => {
       try{
         const response = await axiosPrivateNew.get("/loan/accounts", {signal: controller.signal})
-        console.log(response.data);
-        console.log(response.data.count._count.id)
         setCountLoans(response.data.count._count.id)
+        setShownAccounts(response.data.loans)
         isMounted && setLoans(response.data.loans) 
       }catch(err){
         console.log(err);
@@ -60,9 +60,7 @@ function Loan() {
   },[])
 
   const findAccountByNumber = (number)=>{
-    console.log(number);
     let acc = loans.filter(acc => number === acc.account)
-    console.log(acc);
     setLoanAccount(acc[0])
     setTransaction({...transaction, accountNumber:acc[0].account, transactedAmount: ""})
   }
@@ -73,12 +71,10 @@ function Loan() {
 
   const makeTransaction = async (e)=>{
     e.preventDefault()
-    console.log(transaction);
     try{
       const response = await axiosPrivateNew.post("/transactions",
        JSON.stringify(transaction)
       );
-      console.log(response.data);
       toast.success(response.data.message)
     }catch(err){
       if(!err.response){
@@ -87,6 +83,15 @@ function Loan() {
         toast.error(err.response.data.error)
       }
     }
+  }
+
+  const handleAccountSearch = (e)=>{
+    const filteredAccounts = loans.filter(account =>{
+      return account.account.toLowerCase().includes(e.target.value) || account.firstname.toLowerCase().includes(e.target.value)
+        ||  account.lastname.toLowerCase().includes(e.target.value) || account.othernames.toLowerCase().includes(e.target.value) 
+        || account.email.toLowerCase().includes(e.target.value)
+    })
+    setShownAccounts(filteredAccounts)
   }
 
   return (
@@ -173,7 +178,7 @@ function Loan() {
             <div className='flex flex-wrap justify-between items-center gap-2'>
               <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'>
                 <span className='h-6 w-6'><img src={search} className='' alt="" /></span>
-                <input type="text" className='outline-0 text-sm' placeholder='Search account'/>
+                <input type="text" className='outline-0 text-sm' onChange={handleAccountSearch} placeholder='Search account'/>
               </div>
               <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
                 <button className='active filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
@@ -188,7 +193,7 @@ function Loan() {
             </div>
           </div>
           <div className='min-w-[900px]'>
-            {loans.length == 0 ? 
+            {shownAccounts.length == 0 ? 
               <div>No Loans found</div> 
               :
               <table className='w-full'>
@@ -205,9 +210,9 @@ function Loan() {
                   </tr>
                 </thead>
                 <tbody>
-                  {loans.map(loan=>{
+                  {shownAccounts.map(loan=>{
                     return(
-                      <tr className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                      <tr key={loan.id} onClick={()=>{navigate(`./${loan.id}`)}} className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
                         <td className='px-2 py-6 text-sm'>#{loan.account}</td>
                         <td className='py-4 text-sm flex items-center gap-2'>
                         <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>

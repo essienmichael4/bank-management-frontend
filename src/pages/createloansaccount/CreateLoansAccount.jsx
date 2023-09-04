@@ -41,7 +41,7 @@ const CreateLoansAccount = () => {
         dueAt: "",
         modeOfPayment: "",
         totalAmount: 0,
-        state: "NEW"
+        state: "NOT_LOANED"
     })
     const [account, setAccount] = useState({
         account: "",
@@ -272,8 +272,8 @@ const CreateLoansAccount = () => {
                 gender: "",
                 card: "",
             })
-            toast.error("Loan Applied Successfully")
-            navigate("bms/loans")
+            toast.success("Loan Applied Successfully")
+            navigate("../loans")
         }catch(err){
             if(!err.response){
               toast.error("Server not found")
@@ -516,34 +516,11 @@ const CreateLoansAccount = () => {
                                              name='amountGuaranteed'
                                              value={guarantedAmount}
                                              disabled
-                                            //  onChange={(e)=>handleGuarantorChange(e,i)}
                                              className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
                                         </div>
                                     </div> 
                                 )
                             })}
-                            {/* <div className='flex flex-wrap gap-8 mb-4'>
-                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Guarantors Account</span>
-                                    <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'>
-                                        <input type="text" className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' placeholder='Search by account no.'/>
-                                        <button type='button' className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Guarantors Name</span>
-                                    <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'>
-                                        <input type="text" className='text-xs placeholder:text-xs p-1 outline-0 flex-1 w-20' placeholder='Search by name'/>
-                                        <button type='button' className='h-6 w-6 bg-blue-100 rounded p-1'><img src={search} className='' alt="" />
-                                        </button>
-                                    </div>
-                                </div>
-                                <div className='flex flex-col gap-2 w-60 2xl:w-[20%]'>
-                                    <span className='text-xs text-gray-300'>Amount Guaranteed</span>
-                                    <input type="text" className='py-1 px-2 text-sm rounded border border-slate-200 w-full' />
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                     <div className={` border-t border-gray-200 pt-4`}>

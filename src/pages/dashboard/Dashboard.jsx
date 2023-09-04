@@ -1,21 +1,27 @@
 import React, { useState, useEffect } from 'react'
+// Libraries
+import { NavLink } from 'react-router-dom';
+import moment from 'moment';
+// Api
 import axios from '../../api/axios'
+// Css & Images
 import './dashboard.css'
 import users from '../../assets/users.svg'
+// Components
 import Overview from '../../components/overview/Overview'
-import moment from 'moment';
 import DateRangePicker from '../../components/datepicker/DateRangePicker'
 import TransactionChart from '../../components/transactionchart/TransactionChart';
 import RevenueChart from '../../components/revenuechart/RevenueChart';
-import { NavLink } from 'react-router-dom';
 
 function Dashboard() {
+  // State Intilising
   const [overview, setOverview] = useState([])
   const [dataBalance, setDataBalance] = useState([])
   const [dataLables, setDataLables] = useState([])
   const [transactions, setTransactions] = useState([])
   const [transactionCount, setTransactionCount] = useState()
   const [dates, setDates] = useState([])
+  // Filter Buttons
   const[filters, setFilters] = useState({
     activeFilter:{id:"day", name:"Today"},
     fields: [
@@ -55,12 +61,6 @@ function Dashboard() {
 
     getOverview()
     getTransactions()
-
-    // axios.get("/overview/dashboard")
-    //   .then(response=> { console.log(response.data);
-    //     setOverview(response.data)})
-    //   .catch(err=>console.log(err))
-
 
     return ()=>{
       isMounted = false

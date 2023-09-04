@@ -1,23 +1,26 @@
 import React, { useState,useEffect } from 'react'
 import './loansaccount.css'
+import useAuth from '../../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import refresh from '../../assets/refresh.svg'
 import search from '../../assets/search.svg'
 import close from '../../assets/close.svg'
 import arrow from '../../assets/arrow.svg'
+import arrowleft from '../../assets/arrowleft.svg'
 import useAxios from '../../hooks/useAxios'
 
 const LoansAccount = () => {
   const navigate = useNavigate()
   const {id} =useParams()
+  const {auth} = useAuth()
   const axiosPrivateNew = useAxios()
 
   const [showTransaction, setShowTransaction] = useState(false)
   const [isToggled, setIsToggled] = useState(false)
   const [account,setAccount] = useState({})
   const [transactions, setTransactions] = useState([])
-  const [transactionCount,setTransactionCount] = useState()
+  const [shownTransactions, setShownTransactions] = useState([])
 
   useEffect( ()=>{
     let isMounted = true
@@ -25,21 +28,18 @@ const LoansAccount = () => {
 
     const getAccounts = async() => {
       try{
-        const response = await axiosPrivateNew.get(`/loans/account/${id}`, {signal: controller.signal})
+        const response = await axiosPrivateNew.get(`/loan/account/${id}`, {signal: controller.signal})
         console.log(response.data);
-        // console.log(response.data.count._count.id)
-        // setCountAccount(response.data.count._count.id)
         setTransactions(response.data.transactions) 
+        setShownTransactions(response.data.transactions) 
         isMounted && setAccount(response.data) 
         
       }catch(err){
         console.log(err);
-      }
-
-      // !account.firstname && navigate("../loans")
-      if(!account.firstname){
-        toast.error("Account does not exist")
-        navigate("../loans")
+        if(err.response){
+          toast.error(err.response.data.error)
+          navigate("../loans")
+        }
       }
     }
 
@@ -51,58 +51,103 @@ const LoansAccount = () => {
     }
   },[])
 
+  const handleGrantLoan = async () => {
+    try{
+      const response = await axiosPrivateNew.put(`/loan/grant/${account?.account}`)
+      toast.success(response.data.message)
+    }catch(err){
+      console.log(err);
+      if(err.response){
+        toast.error(err.response.data.error)
+      }
+    }
+  }
+
+  const handleCloseAccount = async () => {
+    try{
+      const response = await axiosPrivateNew.put(`/loan/close/${account?.account}`)
+      toast.success(response.data.message)
+    }catch(err){
+      console.log(err);
+      if(err.response){
+        toast.error(err.response.data.error)
+      }
+    }
+  }
+
+  const handleLoaned = async () => {
+    try{
+      const response = await axiosPrivateNew.put(`/loan/loaned/${account?.account}`)
+      toast.success(response.data.message)
+    }catch(err){
+      console.log(err);
+      if(err.response){
+        toast.error(err.response.data.error)
+      }
+    }
+  }
+
   function handleShowTransaction(){
       setShowTransaction(!showTransaction)
   }
+
   function toggleDetails(){
       setIsToggled(!isToggled)
   }
+
+  const handleTransactionSearch = (e)=>{
+    const filteredAccounts = transactions.filter(transaction =>{
+      return transaction.receipt.toLowerCase().includes(e.target.value)
+    })
+    setShownTransactions(filteredAccounts)
+  }
+
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
       <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
-        <div>
+        <div className='py-4 px-2'>
           <h4>Make Transaction</h4>
-          <button onClick={handleShowTransaction} className='p-1 absolute right-[-.5rem] top-2'>
+          <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
             <img className='w-4 h-4 ' src={close} alt="" />
           </button>
-          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
-          <form className='mt-4 flex flex-col gap-2'>
-            <h5 className='font-bold'>Account Details</h5>
-            <div className='flex flex-col gap-4'>
-              <div className='flex flex-col gap-1'>
-                <span className='text-xs text-gray-500'>Account Number</span>
-                <p className='m-0'>1071010148099</p>
+          {/* <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div> */}
+            <form className='mt-4 flex flex-col gap-2'>
+              <h5 className='font-bold'>Account Details</h5>
+              <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-1'>
+                  <span className='text-xs text-gray-500'>Account Number</span>
+                  <p className='m-0'>{account.account}</p>
+                </div>
+                <div className='flex flex-col gap-1'>
+                  <span className='text-xs text-gray-500'>Account Name</span>
+                  <p className='m-0'>{account?.firstname} {account?.lastname} {account?.othernames}</p>
+                </div>
+                <div className='flex flex-col gap-1'>
+                  <span className='text-xs text-gray-500'>Account Status</span>
+                  <span>{account.status}</span>
+                </div>
+                <div className='flex flex-col gap-1'>
+                  <span className='text-xs text-gray-500'>Account Balance</span>
+                  <p className='m-0'>GH¢ {account.balance}</p>
+                </div>
+                <div className='flex flex-col gap-1'>
+                  <span className='text-sm text-gray-500'>Transaction Type</span>
+                  <p className='m-0'>Loan Payment</p>
+                </div>
+                <div className='flex flex-col gap-1'>
+                  <span className='text-xs text-gray-500'>Transacted Amount</span>
+                  <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+                </div>
               </div>
-              <div className='flex flex-col gap-1'>
-                <span className='text-xs text-gray-500'>Account Name</span>
-                <p className='m-0'>Michael Essien Amoodu</p>
-              </div>
-              <div className='flex flex-col gap-1'>
-                <span className='text-xs text-gray-500'>Account Status</span>
-                <span>Active</span>
-              </div>
-              <div className='flex flex-col gap-1'>
-                <span className='text-xs text-gray-500'>Account Balance</span>
-                <p className='m-0'>GH¢ 200,000.00</p>
-              </div>
-              <div className='flex flex-col gap-1'>
-                <span className='text-xs text-gray-500'>Transaction Type</span>
-                <p className='m-0'>Loan Payment</p>
-              </div>
-              <div className='flex flex-col gap-1'>
-                <span className='text-xs text-gray-500'>Transacted Amount</span>
-                <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
-              </div>
-            </div>
             <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
           </form>
         </div>
       </div>
-      <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
+      <div className={`${showTransaction && ''} py-4 transition w-full `}>
         <div className='flex justify-between items-center pb-4'>
           <div className='flex items-center gap-8'>
-            <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg' onClick={()=>{navigate(-1)}}>
-                <img src={refresh} alt="" className='w-8 h-8'/>
+            <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg' onClick={()=>{navigate(-1)}}>
+                <img src={arrowleft} alt="" className='w-4 h-4'/>
               </button>
             <h4 className='m-0 font-bold '>Loan Account</h4>
 
@@ -110,6 +155,18 @@ const LoansAccount = () => {
               <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
             </div>
           </div>
+          {account?.loanDetail?.state === "GRANTED" && account?.status === "NOT_LOANED" && 
+            <button className='bg-black text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg'  onClick={handleLoaned}>Loaned to Person</button>
+          }
+          {auth.role !== "USER" && <div className='flex gap-2'>
+            {!account?.loanDetail?.grantedBy && 
+              <button className='bg-blue-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleGrantLoan}>Grant Loan</button>
+            }
+            {
+              account?.loanDetail?.state !== "CLOSED" &&
+              <button className='bg-red-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg'  onClick={handleCloseAccount}>Close Account</button>
+            }
+            </div>}
         </div>
         <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
           <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>
@@ -232,32 +289,35 @@ const LoansAccount = () => {
                 </div>
                 <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
                     <h4 className='font-bold'>Guarantor Details</h4>
-                    <div className='flex gap-8 flex-wrap'>
+                    {account?.guarantor?.map((guarantee)=>{
+                      return(
+                        <div className='flex gap-8 flex-wrap'>
                         <div>
                             <span className='text-xs text-gray-300 '>Name</span>
                             <p>
-                              {account.guarantor?.saving?.firstname}
-                              {account.guarantor?.saving?.lastname}
-                              {account.guarantor?.saving?.othernames}
+                              {`${guarantee?.saving?.firstname} ${guarantee?.saving?.lastname} ${guarantee?.saving?.othernames}`}
                             </p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Account Number</span>
-                            <p>{account.guarantor?.saving?.account}</p>
+                            <p>{guarantee?.saving?.account}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Phone</span>
-                            <p>{account.guarantor?.saving?.phone}</p>
+                            <p>{guarantee?.saving?.phone}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Amount Guaranted</span>
-                            <p>¢ {account.guarantor?.amount}</p>
+                            <p>¢ {guarantee?.amount}</p>
                         </div>
                         <div>
                             <span className='text-xs text-gray-300 '>Date Guaranted</span>
-                            <p>{account.guarantor?.createdAt}</p>
+                            <p>{guarantee?.createdAt}</p>
                         </div>
                     </div>
+                      )
+                    })}
+                    
                 </div>
                 <div className={`${!isToggled && 'hidden'} border-t border-gray-200 pt-4`}>
                     <h4 className='font-bold'>Loan Details</h4>
@@ -297,25 +357,20 @@ const LoansAccount = () => {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>20 accounts found</span>
+              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2'>{shownTransactions.length} accounts found</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='border flex items-center gap-2 border-gray-300 p-1 rounded-lg'>
                 <span className='h-4 w-4'><img src={search} className='' alt="" /></span>
                 <input type="text" className='outline-0 text-xs py-[.18rem]' placeholder='Search account'/>
               </div>
-              {/* <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
-                <button className='active filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>All</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-1'>Deposites</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-1'>Debits</button>
-              </div> */}
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
                 <img src={refresh} alt="" className='w-6 h-6'/>
               </button>
             </div>
           </div>
           <div className='min-w-[800px]'>
-            {transactions.length === 0 ? 
+            {shownTransactions?.length === 0 ? 
               <div>No Transactions found</div> : 
               
               <table className='w-full'>
@@ -329,133 +384,21 @@ const LoansAccount = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((transaction)=>{
+                  {shownTransactions?.map((transaction)=>{
                     return (
                       <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-4 text-sm'>#{transaction.id}</td>
-                    <td className='py-4 text-sm'>¢ {transaction.amount}</td>
-                    <td className='py-4 text-sm'>{new Date(transaction.createdAt).toDateString()}</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {transaction.type} </span> </td>
-                    <td className='py-4 text-sm'>{transaction.user.firstname} {transaction.user.lastname} {transaction.user.othernames}</td>
-                  </tr>
+                        <td className='px-2 py-4 text-sm'>#{transaction.id}</td>
+                        <td className='py-4 text-sm'>¢ {transaction.amount}</td>
+                        <td className='py-4 text-sm'>{new Date(transaction.createdAt).toDateString()}</td>
+                        <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {transaction.type} </span> </td>
+                        <td className='py-4 text-sm'>{transaction.user.firstname} {transaction.user.lastname} {transaction.user.othernames}</td>
+                      </tr>
                     )
                   })}
                 </tbody>
               </table>
             }
           </div>
-          {/* <div>
-            <table className='w-full'>
-              <thead className=' border-y border-gray-300'>
-                <tr className=''>
-                  <th className='text-start py-4 text-gray-500 font-light'>ID</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Name</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Amount</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Date</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Transaction Type</th>
-                  <th className='text-start py-4 text-gray-500 font-light'>Transacted By</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-                <tr className='py-6 border-b border-gray-100'>
-                  <td className='py-6'>#1</td>
-                  <td className='py-6'>Michae Essien</td>
-                  <td className='py-6'>¢ 100.00</td>
-                  <td className='py-6'>12-06-2022</td>
-                  <td className='py-6'>Deposit</td>
-                  <td className='py-6'>Ghost Name</td>
-                </tr>
-              </tbody>
-            </table>
-          </div> */}
         </div>
       </div>
     </div>

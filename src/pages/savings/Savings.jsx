@@ -13,6 +13,8 @@ function Savings() {
   const [showTransaction, setShowTransaction] = useState(false)
   const [overview, setOverview] = useState([])
   const [accounts,setAccounts] = useState([])
+  const [shownAccounts,setShownAccounts] = useState([])
+
   const [transaction, setTransaction] = useState({
     accountNumber: "",
     transactionType: "DEPOSITE",
@@ -31,7 +33,6 @@ function Savings() {
     const getOverview = async() => {
       try{
         const response = await axios.get("/overview/savings", {signal: controller.signal})
-        console.log(response.data);
         isMounted && setOverview(response.data)
       }catch(err){
         console.log(err);
@@ -41,8 +42,8 @@ function Savings() {
     const getAccounts = async() => {
       try{
         const response = await axiosPrivateNew.get("/saving/accounts", {signal: controller.signal})
-        console.log(response.data.accounts);
         setCountAccount(response.data.count._count.id)
+        setShownAccounts(response.data.accounts)
         isMounted && setAccounts(response.data.accounts) 
       }catch(err){
         console.log(err);
@@ -87,6 +88,14 @@ function Savings() {
     }
   }
 
+  const handleAccountSearch = (e)=>{
+    const filteredAccounts = accounts.filter(account =>{
+      return account.account.toLowerCase().includes(e.target.value) || account.firstname.toLowerCase().includes(e.target.value)
+        ||  account.lastname.toLowerCase().includes(e.target.value) || account.othernames.toLowerCase().includes(e.target.value) 
+        || account.email.toLowerCase().includes(e.target.value)
+    })
+    setShownAccounts(filteredAccounts)
+  }
 
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
@@ -171,7 +180,9 @@ function Savings() {
               <h5 className='text-xl m-0'>Accounts</h5><span className='text-xs text-gray-300 mt-2'>{countAccount} accounts found</span>
             </div>
             <div className='flex items-center gap-2'>
-              <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'><span className='h-6 w-6'><img src={search} className='' alt="" /></span><input type="text" className='outline-0' placeholder='Search account'/></div>
+              <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'>
+                <span className='h-6 w-6'><img src={search} className='' alt="" /></span>
+                <input type="text" className='outline-0' onChange={ handleAccountSearch} placeholder='Search account'/></div>
               <div className='flex bg-gray-200 p-1 rounded-lg'>
                 <button className='active filter filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
                 <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Active</button>
@@ -184,7 +195,7 @@ function Savings() {
             </div>
           </div>
           <div className='min-w-[800px]'>
-            {accounts.length == 0 ? 
+            {shownAccounts.length == 0 ? 
               <div>No Accounts found</div>  :
               <table className='w-full'>
                 <thead className=' border-y border-gray-300'>
@@ -198,7 +209,7 @@ function Savings() {
                   </tr>
                 </thead>
                 <tbody>
-                  {accounts.map((account)=>{
+                  {shownAccounts.map((account)=>{
                     return(
                       <tr key={account.id} onClick={()=>{navigate(`./${account.id}`)}} className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
                         <td className='px-2 py-6 text-sm'>#{account.account}</td>

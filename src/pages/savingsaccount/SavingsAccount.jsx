@@ -19,7 +19,7 @@ const SavingsAccount = () => {
     const [isToggled, setIsToggled] = useState(false)
     const [account,setAccount] = useState({})
     const [transactions, setTransactions] = useState([])
-    const [transactionCount,setTransactionCount] = useState()
+    const [shownTransactions, setShownTransactions] = useState([])
 
     useEffect( ()=>{
       let isMounted = true
@@ -28,8 +28,8 @@ const SavingsAccount = () => {
       const getAccounts = async() => {
         try{
           const response = await axiosPrivateNew.get(`/saving/account/${id}`, {signal: controller.signal})
-          console.log(response.data);
           setTransactions(response.data.transactions) 
+          setShownTransactions(response.data.transactions) 
           isMounted && setAccount(response.data) 
           
         }catch(err){
@@ -49,12 +49,21 @@ const SavingsAccount = () => {
     },[])
 
 
-    function handleShowTransaction(){
-        setShowTransaction(!showTransaction)
-    }
-    function toggleDetails(){
-        setIsToggled(!isToggled)
-    }
+  function handleShowTransaction(){
+      setShowTransaction(!showTransaction)
+  }
+
+  function toggleDetails(){
+      setIsToggled(!isToggled)
+  }
+
+  const handleTransactionSearch = (e)=>{
+    const filteredAccounts = transactions.filter(transaction =>{
+      return transaction.receipt.toLowerCase().includes(e.target.value)
+    })
+    setShownTransactions(filteredAccounts)
+  }
+
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
       
@@ -64,25 +73,25 @@ const SavingsAccount = () => {
           <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
             <img className='w-4 h-4'  src={close} alt="" />
           </button>
-          <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div>
+          {/* <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div> */}
           <form className='mt-4 flex flex-col gap-2'>
             <h5 className='font-bold'>Account Details</h5>
             <div className='flex flex-col gap-4'>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Number</span>
-                <p className='m-0'>1071010148099</p>
+                <p className='m-0'>{account.account}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Name</span>
-                <p className='m-0'>Michael Essien Amoodu</p>
+                <p className='m-0'>{account?.firstname} {account?.lastname} {account?.othernames}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Status</span>
-                <span>Active</span>
+                <span>{account.status}</span>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Account Balance</span>
-                <p className='m-0'>GH¢ 200,000.00</p>
+                <p className='m-0'>GH¢ {account.balance}</p>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-sm text-gray-500'>Transaction Type</span>
@@ -100,7 +109,7 @@ const SavingsAccount = () => {
           </form>
           </div>
       </div>
-      <div className={`${showTransaction && 'md:pl-4 md:border-l md:border-gray-200'} py-4 transition w-full `}>
+      <div className={`${showTransaction && ''} py-4 transition w-full `}>
         <div className='flex justify-between items-center pb-4'>
           <div className='flex items-center gap-4'>
             <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg' onClick={()=>{navigate(-1)}}>
@@ -117,19 +126,19 @@ const SavingsAccount = () => {
             <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>
             <div className='pt-4 px-4'>
                 <div className='absolute w-28 h-28 rounded-full bg-white border border-gray-200 top-2 left-4'></div>
-                <h3>{account.firstname} {account.lastname} {account.othernames}</h3>
+                <h3>{account?.firstname} {account?.lastname} {account?.othernames}</h3>
                 <div className='flex flex-wrap gap-8'>
                     <div>
                         <span className='text-xs text-gray-300'>Account Balance</span>
-                        <p>GH¢ {account.balance}</p>
+                        <p>GH¢ {account?.balance}</p>
                     </div>
                     <div>
                         <span className='text-xs text-gray-300'>Account Number</span>
-                        <p>{account.account}</p>
+                        <p>{account?.account}</p>
                     </div>
                     <div>
                         <span className='text-xs text-gray-300'>Email</span>
-                        <p>{account.email}</p>
+                        <p>{account?.email}</p>
                     </div>
                     <div>
                         <span className='text-xs text-gray-300'>Phone</span>
@@ -262,12 +271,12 @@ const SavingsAccount = () => {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2 text-gray-300'>{transactions.length} transactions found</span>
+              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2 text-gray-300'>{shownTransactions.length} transactions found</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='border flex items-center gap-2 border-gray-300 p-1 rounded-lg'>
                 <span className='h-4 w-4'><img src={search} className='' alt="" /></span>
-                <input type="text" className='outline-0 text-xs py-[.18rem]' placeholder='Search account'/>
+                <input type="text" className='outline-0 text-xs py-[.18rem]' onChange={handleTransactionSearch} placeholder='Search account'/>
               </div>
               <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
                 <button className='active filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>All</button>
@@ -281,7 +290,7 @@ const SavingsAccount = () => {
           </div>
 
           <div className='min-w-[800px]'>
-            {transactions.length === 0 ? 
+            {shownTransactions.length === 0 ? 
               <div>No Transactions found</div> : 
               
               <table className='w-full'>
@@ -295,10 +304,10 @@ const SavingsAccount = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((transaction)=>{
+                  {shownTransactions.map((transaction)=>{
                     return (
                       <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-4 text-sm'>#{transaction.id}</td>
+                    <td className='px-2 py-4 text-sm'>#{transaction.receipt}</td>
                     <td className='py-4 text-sm'>¢ {transaction.amount}</td>
                     <td className='py-4 text-sm'>{new Date(transaction.createdAt).toDateString()}</td>
                     <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {transaction.type} </span> </td>

@@ -14,6 +14,7 @@ function Transactions() {
   const [accounts,setAccounts] = useState([])
   const [accountNumber, setAccountNumber] = useState()
   const [transactions, setTransactions] = useState([])
+  const [shownTransactions, setShownTransactions] = useState([])
   const [transaction, setTransaction] = useState({
     accountNumber: "",
     transactionType: "DEPOSITE",
@@ -21,7 +22,6 @@ function Transactions() {
   })
   const [account,setAccount] = useState({})
   const [overview, setOverview] = useState([])
-  const [transactionCount, setTransactionCount] = useState()
   const axiosPrivateNew = useAxios()
 
   useEffect( ()=>{
@@ -31,7 +31,6 @@ function Transactions() {
     const getOverview = async() => {
       try{
         const response = await axios.get("/overview/savings", {signal: controller.signal})
-        console.log(response.data);
         isMounted && setOverview(response.data)
       }catch(err){
         console.log(err);
@@ -41,9 +40,7 @@ function Transactions() {
     const getTransactions = async() => {
       try{
         const response = await axiosPrivateNew.get("/transactions", {signal: controller.signal})
-        console.log(response.data);
-        console.log(response.data.count._count.id)
-        setTransactionCount(response.data.count._count.id)
+        setShownTransactions(response.data.transactions)
         isMounted && setTransactions(response.data.transactions) 
       }catch(err){
         console.log(err);
@@ -53,7 +50,6 @@ function Transactions() {
     const getAccounts = async() => {
       try{
         const response = await axiosPrivateNew.get("/transactions/accounts", {signal: controller.signal})
-        console.log(response.data.accounts);
         isMounted && setAccounts(response.data) 
       }catch(err){
         console.log(err);
@@ -88,7 +84,6 @@ function Transactions() {
       const response = await axiosPrivateNew.post("/transactions",
        JSON.stringify(transaction)
       );
-      console.log(response.data);
       toast.success(response.data.message)
     }catch(err){
       if(!err.response){
@@ -97,6 +92,17 @@ function Transactions() {
         toast.error(err.response.data.error)
       }
     }
+  }
+
+  const handleTransactionSearch = (e)=>{
+    const filteredAccounts = transactions.filter(transaction =>{
+      return transaction.receipt.toLowerCase().includes(e.target.value) || transaction?.account?.firstname.toLowerCase().includes(e.target.value)
+        ||  transaction?.account?.lastname.toLowerCase().includes(e.target.value) || transaction?.account?.othernames.toLowerCase().includes(e.target.value) 
+        || transaction?.account?.email.toLowerCase().includes(e.target.value) || transaction?.savingAccount?.firstname.toLowerCase().includes(e.target.value)
+        ||  transaction?.savingAccount?.lastname.toLowerCase().includes(e.target.value) || transaction?.savingAccount?.othernames.toLowerCase().includes(e.target.value) 
+        || transaction?.savingAccount?.email.toLowerCase().includes(e.target.value)
+    })
+    setShownTransactions(filteredAccounts)
   }
 
   return (
@@ -183,10 +189,13 @@ function Transactions() {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs text-gray-300 mt-2'>{transactionCount} transactions found</span>
+              <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs text-gray-300 mt-2'>{shownTransactions.length} transactions found</span>
             </div>
             <div className='flex items-center gap-2'>
-              <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'><span className='h-6 w-6'><img src={search} className='' alt="" /></span><input type="text" className='outline-0' placeholder='Search account'/></div>
+              <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'>
+                <span className='h-6 w-6'><img src={search} className='' alt="" /></span>
+                <input type="text" className='outline-0' onChange={handleTransactionSearch} placeholder='Search account'/>
+              </div>
               <div className='flex bg-gray-200 p-1 rounded-lg'>
                 <button className='active filter filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
                 <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Active</button>
@@ -199,7 +208,7 @@ function Transactions() {
             </div>
           </div>
           <div className='min-w-[800px]'>
-            {transactions.length === 0 ? 
+            {shownTransactions.length === 0 ? 
               <div>No Transactions found</div> : 
               
               <table className='w-full'>
@@ -214,7 +223,7 @@ function Transactions() {
                   </tr>
                 </thead>
                 <tbody>
-                  {transactions.map((transaction)=>{
+                  {shownTransactions.map((transaction)=>{
                     return (
                       <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
                     <td className='px-2 py-4 text-sm'>#{transaction.receipt}</td>

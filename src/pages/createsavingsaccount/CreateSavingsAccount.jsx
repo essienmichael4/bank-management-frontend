@@ -137,7 +137,7 @@ const CreateSavingsAccount = () => {
                 card: "",
             })
             toast.error("Account Created Successfully")
-            navigate("bms/savings")
+            navigate("../savings")
           }catch(err){
             console.log(err.response);
             if(!err.response){
@@ -313,6 +313,8 @@ const CreateSavingsAccount = () => {
                             <datalist id='relation'>
                                 <option>Father</option>
                                 <option>Mother</option>
+                                <option>Son</option>
+                                <option>Daugther</option>
                                 <option>Brother</option>
                                 <option>Sister</option>
                                 <option>Sibling</option>
