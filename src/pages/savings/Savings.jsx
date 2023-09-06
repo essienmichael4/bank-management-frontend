@@ -59,6 +59,26 @@ function Savings() {
     }
   },[axiosPrivateNew])
 
+  const getOverview = async() => {
+    try{
+      const response = await axios.get("/overview/savings")
+      setOverview(response.data)
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const getAccounts = async() => {
+    try{
+      const response = await axiosPrivateNew.get("/saving/accounts")
+      setCountAccount(response.data.count._count.id)
+      setShownAccounts(response.data.accounts)
+      setAccounts(response.data.accounts) 
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   const findAccountByNumber = (number)=>{
     let acc = accounts.filter(acc => number === acc.account)
     
@@ -77,7 +97,8 @@ function Savings() {
       const response = await axiosPrivateNew.post("/transactions",
        JSON.stringify(transaction)
       );
-      console.log(response.data);
+      getOverview()
+      getAccounts()
       toast.success(response.data.message)
     }catch(err){
       if(!err.response){
@@ -153,7 +174,9 @@ function Savings() {
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Transacted Amount</span>
-                <input type="text" value={transaction.transactedAmount} onChange={e =>{setTransaction({...transaction, transactedAmount:e.target.value})}} className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+                <input type="text" 
+                  value={transaction.transactedAmount} 
+                  onChange={e =>{setTransaction({...transaction, transactedAmount:e.target.value})}} className='border border-gray-300 p-2 outline-0 rounded-lg'/>
               </div>
             </div>
             <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>

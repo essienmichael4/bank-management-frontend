@@ -15,6 +15,11 @@ const SavingsAccount = () => {
     const {id} =useParams()
     const axiosPrivateNew = useAxios()
 
+    const [transaction, setTransaction] = useState({
+      accountNumber: "",
+      transactionType: "DEPOSITE",
+      transactedAmount: ""
+    })
     const [showTransaction, setShowTransaction] = useState(false)
     const [isToggled, setIsToggled] = useState(false)
     const [account,setAccount] = useState({})
@@ -30,6 +35,7 @@ const SavingsAccount = () => {
           const response = await axiosPrivateNew.get(`/saving/account/${id}`, {signal: controller.signal})
           setTransactions(response.data.transactions) 
           setShownTransactions(response.data.transactions) 
+          setTransaction({...transaction, accountNumber: response.data.account})
           isMounted && setAccount(response.data) 
           
         }catch(err){
@@ -49,12 +55,46 @@ const SavingsAccount = () => {
     },[])
 
 
+    const getAccounts = async() => {
+      try{
+        const response = await axiosPrivateNew.get(`/saving/account/${id}`)
+        setTransactions(response.data.transactions) 
+        setShownTransactions(response.data.transactions) 
+        setTransaction({...transaction, accountNumber: response.data.account})
+        setAccount(response.data) 
+        
+      }catch(err){
+        if(err.response){
+          toast.error(err.response.data.error)
+          navigate("../savings")
+        }
+      }
+    }
+
   function handleShowTransaction(){
       setShowTransaction(!showTransaction)
   }
 
   function toggleDetails(){
       setIsToggled(!isToggled)
+  }
+
+  const makeTransaction = async (e)=>{
+    e.preventDefault()
+    console.log(transaction);
+    try{
+      const response = await axiosPrivateNew.post("/transactions",
+       JSON.stringify(transaction)
+      );
+      getAccounts()
+      toast.success(response.data.message)
+    }catch(err){
+      if(!err.response){
+        toast.error("Server not found")
+      }else{
+        toast.error(err.response.data.error)
+      }
+    }
   }
 
   const handleTransactionSearch = (e)=>{
@@ -74,7 +114,7 @@ const SavingsAccount = () => {
             <img className='w-4 h-4'  src={close} alt="" />
           </button>
           {/* <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div> */}
-          <form className='mt-4 flex flex-col gap-2'>
+          <form className='mt-4 flex flex-col gap-2' onSubmit={makeTransaction}>
             <h5 className='font-bold'>Account Details</h5>
             <div className='flex flex-col gap-4'>
               <div className='flex flex-col gap-1'>
@@ -95,14 +135,18 @@ const SavingsAccount = () => {
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-sm text-gray-500'>Transaction Type</span>
-                <select name="" id="">
+                <select name="" id="" value={transaction.transactionType} onChange={(e)=>{
+                  setTransaction({...transaction, transactionType:e.target.value})
+                }}>
                   <option value="Deposite">Deposite</option>
                   <option value="Debit">Debit</option>
                 </select>
               </div>
               <div className='flex flex-col gap-1'>
                 <span className='text-xs text-gray-500'>Transacted Amount</span>
-                <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+                <input type="text" 
+                  value={transaction.transactedAmount} 
+                  onChange={e =>{setTransaction({...transaction, transactedAmount:e.target.value})}} className='border border-gray-300 p-2 outline-0 rounded-lg'/>
               </div>
             </div>
             <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>

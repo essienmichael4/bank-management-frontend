@@ -59,6 +59,26 @@ function Loan() {
     }
   },[])
 
+  const getOverview = async() => {
+    try{
+      const response = await axios.get("/overview/loans")
+      setOverview(response.data)
+    }catch(err){
+      console.log(err);
+    }
+  }
+
+  const getAccounts = async() => {
+    try{
+      const response = await axiosPrivateNew.get("/loan/accounts")
+      setCountLoans(response.data.count._count.id)
+      setShownAccounts(response.data.loans)
+      setLoans(response.data.loans) 
+    }catch(err){
+      console.log(err);
+    }
+  }
+
   const findAccountByNumber = (number)=>{
     let acc = loans.filter(acc => number === acc.account)
     setLoanAccount(acc[0])
@@ -75,6 +95,8 @@ function Loan() {
       const response = await axiosPrivateNew.post("/transactions",
        JSON.stringify(transaction)
       );
+      getOverview()
+      getAccounts()
       toast.success(response.data.message)
     }catch(err){
       if(!err.response){

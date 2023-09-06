@@ -15,6 +15,11 @@ const LoansAccount = () => {
   const {id} =useParams()
   const {auth} = useAuth()
   const axiosPrivateNew = useAxios()
+  const [transaction, setTransaction] = useState({
+    accountNumber: "",
+    transactionType: "LOAN_PAYMENT",
+    transactedAmount: ""
+  })
 
   const [showTransaction, setShowTransaction] = useState(false)
   const [isToggled, setIsToggled] = useState(false)
@@ -29,9 +34,9 @@ const LoansAccount = () => {
     const getAccounts = async() => {
       try{
         const response = await axiosPrivateNew.get(`/loan/account/${id}`, {signal: controller.signal})
-        console.log(response.data);
         setTransactions(response.data.transactions) 
         setShownTransactions(response.data.transactions) 
+        setTransaction({...transaction, accountNumber:response.data.account})
         isMounted && setAccount(response.data) 
         
       }catch(err){
@@ -50,6 +55,23 @@ const LoansAccount = () => {
       controller.abort()
     }
   },[])
+
+  const getAccounts = async() => {
+    try{
+      const response = await axiosPrivateNew.get(`/loan/account/${id}`)
+      setTransactions(response.data.transactions) 
+      setShownTransactions(response.data.transactions) 
+      setTransaction({...transaction, accountNumber:response.data.account})
+      setAccount(response.data) 
+      
+    }catch(err){
+      console.log(err);
+      if(err.response){
+        toast.error(err.response.data.error)
+        navigate("../loans")
+      }
+    }
+  }
 
   const handleGrantLoan = async () => {
     try{
@@ -102,6 +124,23 @@ const LoansAccount = () => {
     setShownTransactions(filteredAccounts)
   }
 
+  const makeTransaction = async (e)=>{
+    e.preventDefault()
+    try{
+      const response = await axiosPrivateNew.post("/transactions",
+       JSON.stringify(transaction)
+      );
+      getAccounts()
+      toast.success(response.data.message)
+    }catch(err){
+      if(!err.response){
+        toast.error("Server not found")
+      }else{
+        toast.error(err.response.data.error)
+      }
+    }
+  }
+
   return (
     <div className='flex flex-col items-center md:items-start md:flex-row relative md:gap-4'>
       <div className={`${!showTransaction && 'hidden'} h-full w-full md:w-[450px] transition md:relative bg-white mt-4 rounded-lg border border-gray-300`}>
@@ -111,7 +150,7 @@ const LoansAccount = () => {
             <img className='w-4 h-4 ' src={close} alt="" />
           </button>
           {/* <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div> */}
-            <form className='mt-4 flex flex-col gap-2'>
+            <form onSubmit={makeTransaction} className='mt-4 flex flex-col gap-2'>
               <h5 className='font-bold'>Account Details</h5>
               <div className='flex flex-col gap-4'>
                 <div className='flex flex-col gap-1'>
@@ -136,7 +175,10 @@ const LoansAccount = () => {
                 </div>
                 <div className='flex flex-col gap-1'>
                   <span className='text-xs text-gray-500'>Transacted Amount</span>
-                  <input type="text"  className='border border-gray-300 p-2 outline-0 rounded-lg'/>
+                  <input type="text"
+                    value={transaction.transactedAmount} 
+                    onChange={e =>{setTransaction({...transaction, transactedAmount:e.target.value})}}
+                    className='border border-gray-300 p-2 outline-0 rounded-lg'/>
                 </div>
               </div>
             <button className='rounded-full bg-blue-300 py-2 text-white mt-4'>Proceed with Transaction</button>
@@ -362,7 +404,7 @@ const LoansAccount = () => {
             <div className='flex items-center gap-2'>
               <div className='border flex items-center gap-2 border-gray-300 p-1 rounded-lg'>
                 <span className='h-4 w-4'><img src={search} className='' alt="" /></span>
-                <input type="text" className='outline-0 text-xs py-[.18rem]' placeholder='Search account'/>
+                <input type="text" className='outline-0 text-xs py-[.18rem]' onChange={handleTransactionSearch} placeholder='Search transactions'/>
               </div>
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
                 <img src={refresh} alt="" className='w-6 h-6'/>
