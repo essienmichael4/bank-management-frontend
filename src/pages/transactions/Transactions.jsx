@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useNavigate } from 'react-router-dom'
 import { NavLink } from 'react-router-dom'
 import Overview from '../../components/overview/Overview'
 import users from '../../assets/users.svg'
@@ -10,6 +11,7 @@ import useAxios from '../../hooks/useAxios'
 import { toast } from 'react-toastify';
 
 function Transactions() {
+  const navigate = useNavigate()
   const [showTransaction, setShowTransaction] = useState(false)
   const [accounts,setAccounts] = useState([])
   const [accountNumber, setAccountNumber] = useState()
@@ -225,7 +227,7 @@ function Transactions() {
                 <tbody>
                   {shownTransactions.map((transaction)=>{
                     return (
-                      <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                      <tr onClick={()=>{navigate(`./${transaction.id}`)}} className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
                     <td className='px-2 py-4 text-sm'>#{transaction.receipt}</td>
                     <td className='py-4 text-sm flex items-center gap-2'>
                       

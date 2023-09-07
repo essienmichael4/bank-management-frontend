@@ -12,6 +12,7 @@ import CreateSavingsAccount from "./pages/createsavingsaccount/CreateSavingsAcco
 import CreateLoansAccount from "./pages/createloansaccount/CreateLoansAccount";
 import RequireAuth from "./components/RequireAuth";
 import SetAuth from "./components/SetAuth";
+import Transaction from "./pages/transaction/Transaction";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="loans/:id" element={<LoansAccount />} />
               <Route path="loans/create" element={<CreateLoansAccount />} />
               <Route path="transactions" element={<Transactions />} />
+              <Route path="transactions/:id" element={<Transaction />} />
               <Route path="users" element={<Users />} />
             </Route>
           </Route>
