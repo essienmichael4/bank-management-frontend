@@ -1,0 +1,17 @@
+.filter.active{
+    @apply bg-white rounded-md
+}
+
+.arrow-detail{
+    transform: rotate(90deg);
+}
+
+.arrow-detail.active{
+    transform: rotate(270deg);
+}
+
+.image__bg{
+    background-image: url(../../assets/img1.jpg);
+    background-size: cover;
+    background-position: center;
+}

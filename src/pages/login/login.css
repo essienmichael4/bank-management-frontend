@@ -19,3 +19,11 @@ h1{
     background-color: rgba(#353535, .4);
     /* // background-color: #45454569; */
 }
+
+input:invalid[focused="true"]{
+    @apply border-red-400
+}
+
+input:invalid[passwordFocused="true"]{
+    @apply border-red-400
+}

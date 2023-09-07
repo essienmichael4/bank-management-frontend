@@ -12,7 +12,8 @@
 }
 
 body{
-  font-family: 'Poppins';
+  font-family: 'Poppins', 'system-ui', sans-serif;
+  @apply bg-gray-100
 }
 
 .App{
