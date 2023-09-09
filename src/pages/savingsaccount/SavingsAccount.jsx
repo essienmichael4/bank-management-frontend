@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import AccountTransactionTable from '../../components/accountTransactionsTable/AccountTransactionTable';
 import './savingsaccount.css'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
@@ -113,7 +114,6 @@ const SavingsAccount = () => {
           <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
             <img className='w-4 h-4'  src={close} alt="" />
           </button>
-          {/* <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div> */}
           <form className='mt-4 flex flex-col gap-2' onSubmit={makeTransaction}>
             <h5 className='font-bold'>Account Details</h5>
             <div className='flex flex-col gap-4'>
@@ -337,36 +337,12 @@ const SavingsAccount = () => {
             {shownTransactions.length === 0 ? 
               <div>No Transactions found</div> : 
               
-              <table className='w-full'>
-                <thead className=' border-y border-gray-300'>
-                  <tr className=''>
-                    <th className='px-2 text-start text-xs py-4 text-gray-400 font-medium'>ID</th>
-                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Amount</th>
-                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Date</th>
-                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Transaction Type</th>
-                    <th className='text-start text-xs py-4 text-gray-400 font-medium'>Transacted By</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {shownTransactions.map((transaction)=>{
-                    return (
-                      <tr className='border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                    <td className='px-2 py-4 text-sm'>#{transaction.receipt}</td>
-                    <td className='py-4 text-sm'>¢ {transaction.amount}</td>
-                    <td className='py-4 text-sm'>{new Date(transaction.createdAt).toDateString()}</td>
-                    <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {transaction.type} </span> </td>
-                    <td className='py-4 text-sm'>{transaction.user.firstname} {transaction.user.lastname} {transaction.user.othernames}</td>
-                  </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+              <AccountTransactionTable shownTransactions={shownTransactions} />
             }
           </div>
         </div>
       </div>
     </div>
-    // <div>SavingsAccount</div>
   )
 }
 

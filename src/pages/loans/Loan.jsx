@@ -195,7 +195,7 @@ function Loan() {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4  mb-8 overflow-y-auto'>
           <div className='flex flex-wrap items-center relative justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Loans</h5><span className='text-xs text-gray-300 mt-2'>{countLoans} Loans found</span>
+              <h5 className='text-xl m-0'>Loans</h5><span className='text-xs text-gray-300 mt-2'>{shownAccounts.length} Loans found</span>
             </div>
             <div className='flex flex-wrap justify-between items-center gap-2'>
               <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'>
@@ -248,7 +248,17 @@ function Loan() {
                         <td className='py-6 text-sm'>¢ {loan?.loanDetail?.amount}</td>
                         <td className='py-6 text-sm'>¢ {loan.balance}</td>
                         <td className='py-6 text-sm'>{loan.phone ? loan.phone : "-"}</td>
-                        <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {loan.status} </span> </td>
+                        <td className='py-4 text-sm'>
+                          <span 
+                            className={`${loan.status === "PENDING" && 'bg-green-100 text-green-500 before:bg-green-500'}
+                            ${loan.status === "OVERDUE" && 'bg-red-100 text-red-500 before:bg-red-500'} 
+                            ${loan.status === "DUE" && 'bg-orange-100 text-orange-500 before:bg-orange-500'} 
+                            ${loan.status === "NOT_LOANED" && 'bg-gray-100 text-gray-500 before:bg-gray-500'} 
+                            ${loan.status === "PAID" && 'bg-blue-100 text-blue-500 before:bg-blue-500'} 
+                            rounded-lg relative text-sm py-2 px-6  before:block before:absolute before:w-2 before:h-2  before:rounded-full before:left-2 before:top-[.9rem]`}> 
+                              {loan.status} 
+                          </span> 
+                        </td>
                         <td className='py-6 text-sm'>{new Date(loan?.loanDetail?.dueAt).toDateString()}</td>
                         <td className='py-6 text-sm'>{loan?.loanDetail?.modeOfPayment}</td>
                       </tr>

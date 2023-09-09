@@ -237,7 +237,6 @@ function Savings() {
                       <tr key={account.id} onClick={()=>{navigate(`./${account.id}`)}} className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
                         <td className='px-2 py-6 text-sm'>#{account.account}</td>
                         <td className='py-4 text-sm flex items-center gap-2'>
-                          {/* <Link to={`saving/${account.id}`} className=""> */}
                         <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
                           <img className='w-4 h-4' src={users} alt="" />
                         </div>
@@ -245,11 +244,15 @@ function Savings() {
                           <p className='-mb-1 font-medium'>{account.firstname} {account.lastname} {account.othernames}</p>
                           <span className='-mt-2 text-xs text-gray-300'>{account.email}</span>
                         </div>
-                        {/* </Link> */}
                       </td>
                         <td className='py-6 text-sm'>¢ {account.balance}</td>
                         <td className='py-6 text-sm'>{account.phone ? account.phone : "-"}</td>
-                        <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {account.status} </span> </td>
+                        <td className='py-4 text-sm'>
+                          <span 
+                            className={`${account.status === "ACTIVE" && 'bg-green-100 text-green-500 before:bg-green-500'}
+                              ${account.status === "CLOSED" && 'bg-red-100 text-red-500 before:bg-red-500'} 
+                              ${account.status === "DISABLED" && 'bg-gray-100 text-gray-500 before:bg-gray-500'} 
+                              rounded-lg relative text-sm py-2 px-6  before:block before:absolute before:w-2 before:h-2  before:rounded-full before:left-2 before:top-[.9rem]`}> {account.status} </span> </td>
                         <td className='py-6 text-sm'>{account.gender}</td>
                       </tr>
                     )

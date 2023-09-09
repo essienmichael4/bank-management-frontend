@@ -6,6 +6,7 @@ import search from '../../assets/search.svg'
 import close from '../../assets/close.svg'
 import useAxios from '../../hooks/useAxios'
 import { toast } from 'react-toastify';
+import arrowleft from '../../assets/arrowleft.svg'
 
 function Transaction() {
   const {id} =useParams()
@@ -158,6 +159,9 @@ function Transaction() {
         <div className='flex justify-between items-center pb-4'>
           <div className='flex items-center gap-8'>
             <div className='flex items-center gap-2 '>
+            <button className='p-2 bg-blue-100 flex items-center justify-center rounded-lg' onClick={()=>{navigate(-1)}}>
+                <img src={arrowleft} alt="" className='w-4 h-4'/>
+              </button>
               <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
             </div>
             <div className='flex items-center gap-2'>
