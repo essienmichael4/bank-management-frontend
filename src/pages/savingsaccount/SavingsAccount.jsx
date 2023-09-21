@@ -21,6 +21,11 @@ const SavingsAccount = () => {
       transactionType: "DEPOSITE",
       transactedAmount: ""
     })
+    const [filters, setFilters] = useState({
+      all: true,
+      deposite: false,
+      debit: false,
+    })
     const [showTransaction, setShowTransaction] = useState(false)
     const [isToggled, setIsToggled] = useState(false)
     const [account,setAccount] = useState({})
@@ -96,6 +101,20 @@ const SavingsAccount = () => {
         toast.error(err.response.data.error)
       }
     }
+  }
+
+  const handleFilters = (filter)=>{
+    const filteredAccounts = transactions.filter(transaction =>{
+      if(filter == "all") return transaction
+
+      return transaction.type.toLowerCase() == filter
+    })
+    setShownTransactions(filteredAccounts)
+    setFilters({
+        all: filter == "all",
+        deposite: filter == "deposite",
+        debit: filter == "debit",
+    })
   }
 
   const handleTransactionSearch = (e)=>{
@@ -323,9 +342,9 @@ const SavingsAccount = () => {
                 <input type="text" className='outline-0 text-xs py-[.18rem]' onChange={handleTransactionSearch} placeholder='Search account'/>
               </div>
               <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
-                <button className='active filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>All</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-1'>Deposites</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-1'>Debits</button>
+              <button onClick={()=> handleFilters("all")} className={`${filters.all && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>All</button>
+                <button onClick={()=> handleFilters("deposite")} className={`${filters.deposite && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Deposite</button>
+                <button onClick={()=> handleFilters("debit")} className={`${filters.debit && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Debit</button>
               </div>
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
                 <img src={refresh} alt="" className='w-6 h-6'/>

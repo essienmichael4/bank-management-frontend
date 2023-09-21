@@ -22,6 +22,13 @@ function Transactions() {
     transactionType: "DEPOSITE",
     transactedAmount: ""
   })
+
+  const [filters, setFilters] = useState({
+    all: true,
+    deposite: false,
+    debit: false,
+    loanPayment: false
+  })
   const [account,setAccount] = useState({})
   const [overview, setOverview] = useState([])
   const axiosPrivateNew = useAxios()
@@ -94,6 +101,21 @@ function Transactions() {
         toast.error(err.response.data.error)
       }
     }
+  }
+
+  const handleFilters = (filter)=>{
+    const filteredAccounts = transactions.filter(transaction =>{
+      if(filter == "all") return transaction
+
+      return transaction.type.toLowerCase() == filter
+    })
+    setShownTransactions(filteredAccounts)
+    setFilters({
+        all: filter == "all",
+        deposite: filter == "deposite",
+        debit: filter == "debit",
+        loanPayment: filter == "loan_payment"
+    })
   }
 
   const handleTransactionSearch = (e)=>{
@@ -199,10 +221,10 @@ function Transactions() {
                 <input type="text" className='outline-0' onChange={handleTransactionSearch} placeholder='Search account'/>
               </div>
               <div className='flex bg-gray-200 p-1 rounded-lg'>
-                <button className='active filter filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Active</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Inactive</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Closed</button>
+                <button onClick={()=> handleFilters("all")} className={`${filters.all && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>All</button>
+                <button onClick={()=> handleFilters("deposite")} className={`${filters.deposite && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Deposite</button>
+                <button onClick={()=> handleFilters("debit")} className={`${filters.debit && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Debit</button>
+                <button onClick={()=> handleFilters("loan_payment")} className={`${filters.loanPayment && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Loan Payment</button>
               </div>
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
                 <img src={refresh} alt="" className='w-8 h-8'/>

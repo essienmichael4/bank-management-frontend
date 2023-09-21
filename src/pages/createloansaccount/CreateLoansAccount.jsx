@@ -41,7 +41,7 @@ const CreateLoansAccount = () => {
         dueAt: "",
         modeOfPayment: "",
         totalAmount: 0,
-        state: "NOT_LOANED"
+        state: "NEW"
     })
     const [account, setAccount] = useState({
         account: "",
@@ -54,7 +54,7 @@ const CreateLoansAccount = () => {
         gender: "",
         card: "",
         purpose: "",
-        status: "PENDING"
+        status: "NOT_LOANED"
     })
     const [sponsor, setSponsor] = useState({
         accountNumber: "",

@@ -18,6 +18,15 @@ function Loan() {
     transactionType: "LOAN_PAYMENT",
     transactedAmount: ""
   })
+
+  const [filters, setFilters] = useState({
+    all: true,
+    pending: false,
+    due: false,
+    overdue: false,
+    paid: false,
+    notLoaned: false
+  })
   const [loans, setLoans] = useState([])
   const [shownAccounts,setShownAccounts] = useState([])
   const [accountNumber, setAccountNumber] = useState()
@@ -105,6 +114,23 @@ function Loan() {
         toast.error(err.response.data.error)
       }
     }
+  }
+
+  const handleFilters = (filter)=>{
+    const filteredAccounts = loans.filter(account =>{
+      if(filter == "all") return account
+
+      return account.status.toLowerCase() == filter
+    })
+    setShownAccounts(filteredAccounts)
+    setFilters({
+        all: filter == "all",
+        pending: filter == "pending",
+        overdue: filter == "overdue",
+        due: filter == "due",
+        paid: filter == "paid",
+        notLoaned: filter == "not_loaned"
+    })
   }
 
   const handleAccountSearch = (e)=>{
@@ -203,11 +229,12 @@ function Loan() {
                 <input type="text" className='outline-0 text-sm' onChange={handleAccountSearch} placeholder='Search account'/>
               </div>
               <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
-                <button className='active filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>Paid</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>Pending</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>Due</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-1 px-2'>Overdue</button>
+                <button onClick={()=> handleFilters("all")} className={`${filters.all && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>All</button>
+                <button onClick={()=> handleFilters("pending")} className={`${filters.pending && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Pending</button>
+                <button onClick={()=> handleFilters("due")} className={`${filters.due && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Due</button>
+                <button onClick={()=> handleFilters("overdue")} className={`${filters.overdue && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Overdue</button>
+                <button onClick={()=> handleFilters("paid")} className={`${filters.paid && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Paid</button>
+                <button onClick={()=> handleFilters("not_loaned")} className={`${filters.notLoaned && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Not Loaned</button>
               </div>
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg absolute top-[-0.5rem] right-0 md:relative md:top-0'>
                 <img src={refresh} alt="" className='w-8 h-8'/>

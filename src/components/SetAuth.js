@@ -13,8 +13,7 @@ const SetAuth = () => {
         }
 
         setAuth({user, token})
-        // console.log(user);
-        // return
+        
     },[])
 
   return (

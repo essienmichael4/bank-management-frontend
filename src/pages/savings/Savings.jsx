@@ -20,6 +20,14 @@ function Savings() {
     transactionType: "DEPOSITE",
     transactedAmount: ""
   })
+
+  const [filters, setFilters] = useState({
+    all: true,
+    active: false,
+    disabled: false,
+    closed: false
+  })
+
   const [accountNumber, setAccountNumber] = useState()
   const [savingAccount,setSavingAccount] = useState({})
   const [countAccount, setCountAccount] = useState()
@@ -88,6 +96,21 @@ function Savings() {
 
   function handleShowTransaction(){
     setShowTransaction(!showTransaction)
+  }
+
+  const handleFilters = (filter)=>{
+    const filteredAccounts = accounts.filter(account =>{
+      if(filter == "all") return account
+
+      return account.status.toLowerCase() == filter
+    })
+    setShownAccounts(filteredAccounts)
+    setFilters({
+        all: filter == "all",
+        active: filter == "active",
+        disabled: filter == "disabled",
+        closed: filter == "closed"
+    })
   }
 
   const makeTransaction = async (e)=>{
@@ -207,10 +230,10 @@ function Savings() {
                 <span className='h-6 w-6'><img src={search} className='' alt="" /></span>
                 <input type="text" className='outline-0' onChange={ handleAccountSearch} placeholder='Search account'/></div>
               <div className='flex bg-gray-200 p-1 rounded-lg'>
-                <button className='active filter filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>All</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Active</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Inactive</button>
-                <button className=' filter text-xs flex whitespace-no-wrap items-center justify-center py-2 px-2'>Closed</button>
+                <button onClick={()=> handleFilters("all")} className={`${filters.all && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>All</button>
+                <button onClick={()=> handleFilters("active")} className={`${filters.active && 'active'}  filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Active</button>
+                <button onClick={()=> handleFilters("disabled")} className={`${filters.disabled && 'active'}  filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Disabled</button>
+                <button onClick={()=> handleFilters("closed")} className={`${filters.closed && 'active'}  filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>Closed</button>
               </div>
               <button className='p-1 bg-blue-100 flex items-center justify-center rounded-lg'>
                 <img src={refresh} alt="" className='w-8 h-8'/>

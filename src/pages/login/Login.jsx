@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 import { useNavigate, useLocation } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
@@ -32,9 +32,6 @@ function Login() {
 
       const user = response.data.user
       const token = response.data.token
-      
-      localStorage.setItem("bmsUser", JSON.stringify(user))
-      localStorage.setItem("bmsUserAccessToken", JSON.stringify(token))
       
       setAuth({user, token})
       setPassword("")
