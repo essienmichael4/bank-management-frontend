@@ -9,10 +9,12 @@ import close from '../../assets/close.svg'
 import arrow from '../../assets/arrow.svg'
 import arrowleft from '../../assets/arrowleft.svg'
 import useAxios from '../../hooks/useAxios'
+import useAuth from '../../hooks/useAuth';
 
 
 const SavingsAccount = () => {
     const navigate = useNavigate()
+    const {auth} = useAuth()
     const {id} =useParams()
     const axiosPrivateNew = useAxios()
 
@@ -117,6 +119,45 @@ const SavingsAccount = () => {
     })
   }
 
+  const handleDisableAccount = async () => {
+    try{
+      const response = await axiosPrivateNew.put(`/saving/disable/${account?.account}`)
+      toast.success(response.data.message)
+      getAccounts()
+    }catch(err){
+      console.log(err);
+      if(err.response){
+        toast.error(err.response.data.error)
+      }
+    }
+  }
+
+  const handleCloseAccount = async () => {
+    try{
+      const response = await axiosPrivateNew.put(`/saving/close/${account?.account}`)
+      toast.success(response.data.message)
+      getAccounts()
+    }catch(err){
+      console.log(err);
+      if(err.response){
+        toast.error(err.response.data.error)
+      }
+    }
+  }
+
+  const handleEnableAccount = async () => {
+    try{
+      const response = await axiosPrivateNew.put(`/saving/activate/${account?.account}`)
+      toast.success(response.data.message)
+      getAccounts()
+    }catch(err){
+      console.log(err);
+      if(err.response){
+        toast.error(err.response.data.error)
+      }
+    }
+  }
+
   const handleTransactionSearch = (e)=>{
     const filteredAccounts = transactions.filter(transaction =>{
       return transaction.receipt.toLowerCase().includes(e.target.value)
@@ -183,6 +224,23 @@ const SavingsAccount = () => {
             <div className='flex items-center gap-2 '>
               <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
             </div>
+          
+          </div>
+          <div>
+            {auth?.user?.role !== "USER" && <div className='flex gap-2'>
+              {
+                account?.status !== "CLOSED" &&
+                <button onClick={handleCloseAccount} className='bg-red-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' >Close Account</button>
+              }
+              {
+                account?.status !== "DISABLED" && account?.status !== "CLOSED" &&
+                <button onClick={handleDisableAccount} className='bg-yellow-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' >Disable Account</button>
+              }
+              {
+                account?.status !== "CLOSED" && account?.status !== "ACTIVE" &&
+                <button onClick={handleEnableAccount} className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' >Enable Account</button>
+              }
+            </div>}
           </div>
         </div>
         <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
@@ -337,9 +395,9 @@ const SavingsAccount = () => {
               <h5 className='text-xl m-0'>Transactions</h5><span className='text-xs mt-2 text-gray-300'>{shownTransactions.length} transactions found</span>
             </div>
             <div className='flex items-center gap-2'>
-              <div className='border flex items-center gap-2 border-gray-300 p-1 rounded-lg'>
-                <span className='h-4 w-4'><img src={search} className='' alt="" /></span>
-                <input type="text" className='outline-0 text-xs py-[.18rem]' onChange={handleTransactionSearch} placeholder='Search account'/>
+              <div className='border flex items-center gap-2 border-gray-300 p-2 rounded-lg'>
+                <span className='h-6 w-6'><img src={search} className='' alt="" /></span>
+                <input type="text" className='outline-0 py-[.18rem]' onChange={handleTransactionSearch} placeholder='Search account'/>
               </div>
               <div className='flex flex-wrap bg-gray-200 p-1 rounded-lg'>
               <button onClick={()=> handleFilters("all")} className={`${filters.all && 'active'} filter filter text-sm flex whitespace-no-wrap items-center justify-center py-2 px-2`}>All</button>

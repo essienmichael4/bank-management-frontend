@@ -14,10 +14,11 @@ import arrow from '../assets/arrow.svg'
 
 
 function Layout() {
-    const {auth} = useAuth()
+    const {auth, setAuth} = useAuth()
     const path = useResolvedPath().pathname.split("/")[2].toLocaleUpperCase()
     const date = useState(new Date().toDateString())
     const [isToggled, setIsToggled] = useState(false)
+    const [toggleLogout, setToggleLogout] = useState(false)
 
     function toggleMenu(){
         setIsToggled(!isToggled)
@@ -83,7 +84,12 @@ function Layout() {
                                 return <span className='mr-1'>{department.office} </span>
                             })}</p>
                         </div>
-                        <div className='w-8 h-8 md:w-10 md:h-10 2xl:w-12 2xl:h-12 rounded-full bg-black'></div>
+                        <div onClick={e=>setToggleLogout(!toggleLogout)} className='cursor-pointer w-8 h-8 md:w-10 md:h-10 2xl:w-12 2xl:h-12 rounded-full bg-black'></div>
+                    </div>
+                    <div className={`${toggleLogout ? 'block' : 'hidden'} absolute top-[4.5rem] right-6 p-1 bg-white border border-gray-300 rounded-lg`}>
+                        <button onClick={e=>{
+                            setAuth({})
+                        }} className='px-8 py-2 rounded-s hover:bg-gray-200'>Logout</button>
                     </div>
                 </div>
             </header>

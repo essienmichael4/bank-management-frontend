@@ -30,7 +30,6 @@ function Savings() {
 
   const [accountNumber, setAccountNumber] = useState()
   const [savingAccount,setSavingAccount] = useState({})
-  const [countAccount, setCountAccount] = useState()
   const axiosPrivateNew = useAxios()
   const navigate = useNavigate()
 
@@ -50,7 +49,6 @@ function Savings() {
     const getAccounts = async() => {
       try{
         const response = await axiosPrivateNew.get("/saving/accounts", {signal: controller.signal})
-        setCountAccount(response.data.count._count.id)
         setShownAccounts(response.data.accounts)
         isMounted && setAccounts(response.data.accounts) 
       }catch(err){
@@ -79,7 +77,6 @@ function Savings() {
   const getAccounts = async() => {
     try{
       const response = await axiosPrivateNew.get("/saving/accounts")
-      setCountAccount(response.data.count._count.id)
       setShownAccounts(response.data.accounts)
       setAccounts(response.data.accounts) 
     }catch(err){
@@ -223,7 +220,7 @@ function Savings() {
         <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4  mb-8 overflow-y-auto'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Accounts</h5><span className='text-xs text-gray-300 mt-2'>{countAccount} accounts found</span>
+              <h5 className='text-xl m-0'>Accounts</h5><span className='text-xs text-gray-300 mt-2'>{shownAccounts.length} accounts found</span>
             </div>
             <div className='flex items-center gap-2'>
               <div className='border flex gap-2 border-gray-300 p-2 rounded-lg'>

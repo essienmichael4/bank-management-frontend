@@ -136,7 +136,7 @@ const CreateSavingsAccount = () => {
                 gender: "",
                 card: "",
             })
-            toast.error("Account Created Successfully")
+            toast.success("Account Created Successfully")
             navigate("../savings")
           }catch(err){
             console.log(err.response);

@@ -77,6 +77,7 @@ const LoansAccount = () => {
   const handleGrantLoan = async () => {
     try{
       const response = await axiosPrivateNew.put(`/loan/grant/${account?.account}`)
+      getAccounts()
       toast.success(response.data.message)
     }catch(err){
       console.log(err);
@@ -89,6 +90,7 @@ const LoansAccount = () => {
   const handleCloseAccount = async () => {
     try{
       const response = await axiosPrivateNew.put(`/loan/close/${account?.account}`)
+      getAccounts()
       toast.success(response.data.message)
     }catch(err){
       console.log(err);
@@ -101,6 +103,7 @@ const LoansAccount = () => {
   const handleLoaned = async () => {
     try{
       const response = await axiosPrivateNew.put(`/loan/loaned/${account?.account}`)
+      getAccounts()
       toast.success(response.data.message)
     }catch(err){
       console.log(err);
@@ -150,7 +153,6 @@ const LoansAccount = () => {
           <button onClick={handleShowTransaction} className='p-1 absolute right-0 top-2'>
             <img className='w-4 h-4 ' src={close} alt="" />
           </button>
-          {/* <div className='border flex gap-2 border-gray-300 p-1 rounded-lg'><input type="text" className='p-1 outline-0 flex-1' placeholder='Search account'/><button className='h-8 w-8 bg-blue-100 rounded p-1'><img src={search} className='' alt="" /></button></div> */}
             <form onSubmit={makeTransaction} className='mt-4 flex flex-col gap-2'>
               <h5 className='font-bold'>Account Details</h5>
               <div className='flex flex-col gap-4'>
@@ -198,18 +200,22 @@ const LoansAccount = () => {
               <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
             </div>
           </div>
-          {account?.loanDetail?.state === "GRANTED" && account?.status === "NOT_LOANED" && 
-            <button className='bg-black text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg'  onClick={handleLoaned}>Loaned to Person</button>
-          }
-          {auth.role !== "USER" && <div className='flex gap-2'>
-            {!account?.loanDetail?.grantedBy && 
-              <button className='bg-blue-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleGrantLoan}>Grant Loan</button>
+          <div className='flex gap-2'>
+            {account?.loanDetail?.state === "GRANTED" && account?.status === "NOT_LOANED" && 
+              <button className='bg-black text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg'  onClick={handleLoaned}>Loaned to Person</button>
             }
-            {
-              account?.loanDetail?.state !== "CLOSED" &&
-              <button className='bg-red-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg'  onClick={handleCloseAccount}>Close Account</button>
+            {auth?.user?.role !== "USER" && 
+              <>
+              {!account?.loanDetail?.grantedBy && 
+                <button className='bg-blue-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleGrantLoan}>Grant Loan</button>
+              }
+              {
+                account?.loanDetail?.state !== "CLOSED" &&
+                <button className='bg-red-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg'  onClick={handleCloseAccount}>Close Account</button>
+              }
+              </>
             }
-            </div>}
+            </div>
         </div>
         <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
           <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>

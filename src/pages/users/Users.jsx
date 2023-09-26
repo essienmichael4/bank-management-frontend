@@ -118,11 +118,7 @@ function Users() {
         status: "ACTIVE"
       })
 
-      setDepartment({
-        office: "",
-        state: "ACTIVE"
-      })
-
+      setDepartment([])
       getAllDepartments()
       toast.success(response.data.message)
 
