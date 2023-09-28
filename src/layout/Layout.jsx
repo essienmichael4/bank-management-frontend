@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify';
 import useAuth from '../hooks/useAuth'
 import './layout.css'
-import { Outlet, NavLink, useResolvedPath } from 'react-router-dom'
+import { Outlet, NavLink, useResolvedPath, useNavigate } from 'react-router-dom'
 import menu from '../assets/menu.svg'
 import dashboard from '../assets/dashboard.svg'
 import users from '../assets/users.svg'
@@ -16,6 +16,7 @@ import arrow from '../assets/arrow.svg'
 function Layout() {
     const {auth, setAuth} = useAuth()
     const path = useResolvedPath().pathname.split("/")[2].toLocaleUpperCase()
+    const navigate = useNavigate()
     const date = useState(new Date().toDateString())
     const [isToggled, setIsToggled] = useState(false)
     const [toggleLogout, setToggleLogout] = useState(false)
@@ -86,10 +87,13 @@ function Layout() {
                         </div>
                         <div onClick={e=>setToggleLogout(!toggleLogout)} className='cursor-pointer w-8 h-8 md:w-10 md:h-10 2xl:w-12 2xl:h-12 rounded-full bg-black'></div>
                     </div>
-                    <div className={`${toggleLogout ? 'block' : 'hidden'} absolute top-[4.5rem] right-6 p-1 bg-white border border-gray-300 rounded-lg`}>
+                    <div className={`${toggleLogout ? 'flex flex-col' : 'hidden'} absolute top-[4.5rem] right-6 p-1 bg-white border border-gray-300 rounded-lg`}>
                         <button onClick={e=>{
                             setAuth({})
                         }} className='px-8 py-2 rounded-s hover:bg-gray-200'>Logout</button>
+                        <button onClick={e=>{
+                            navigate(`./users/${auth.user.id}`)
+                        }} className='px-8 py-2 rounded-s hover:bg-gray-200'>Profile</button>
                     </div>
                 </div>
             </header>

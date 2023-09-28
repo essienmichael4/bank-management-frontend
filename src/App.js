@@ -13,6 +13,7 @@ import CreateLoansAccount from "./pages/createloansaccount/CreateLoansAccount";
 import RequireAuth from "./components/RequireAuth";
 import SetAuth from "./components/SetAuth";
 import Transaction from "./pages/transaction/Transaction";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
               <Route path="transactions" element={<Transactions />} />
               <Route path="transactions/:id" element={<Transaction />} />
               <Route path="users" element={<Users />} />
+              <Route path="users/:id" element={<Profile />} />
             </Route>
           </Route>
         {/* </Route> */}

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
-// import { NavLink, useNavigate } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import users from '../../assets/users.svg'
+import usersi from '../../assets/users.svg'
 import close from '../../assets/close.svg'
 import './users.css'
 import axios from '../../api/axios'
 import useAxios from '../../hooks/useAxios'
 
 function Users() {
-
+  const {auth} = useAuth()
+  const navigate = useNavigate()
   const axiosPrivateNew = useAxios()
   const [showModal, setShowModal] = useState(false)
   const [users, setUsers]= useState([])
@@ -148,7 +150,7 @@ function Users() {
       <div className='bg-white w-full border border-gray-300 px-4 pt-4 py-8 rounded-lg mt-4  mb-8 overflow-y-auto'>
           <div className='flex items-center justify-between py-2 mb-4'>
             <div className='flex items-center gap-2'>
-              <h5 className='text-xl m-0'>Users</h5><span className='text-xs text-gray-300 mt-2'>accounts found</span>
+              <h5 className='text-xl m-0'>Users</h5><span className='text-xs text-gray-300 mt-2'>{users.length} accounts found</span>
             </div>
             <div className='flex items-center gap-2'>
               
@@ -156,7 +158,7 @@ function Users() {
           </div>
           <div className='min-w-[800px]'>
             {users.length == 0 ?
-              <div>No Transactions found</div>
+              <div>No Users found</div>
             :
               <table className='w-full'>
                 <thead className=' border-y border-gray-300'>
@@ -170,24 +172,83 @@ function Users() {
                 </thead>
                 <tbody>
                   {users.map((user) => {
-                    return(
-                      <tr  className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
-                        <td className='px-2 py-6 text-sm'>#{user.employeeId}</td>
-                        <td className='py-4 text-sm flex items-center gap-2'>
-                        <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
-                          <img className='w-4 h-4' src={users} alt="" />
-                        </div>
-                        <div>
-                          <p className='-mb-1 font-medium'>{user?.firstname} {user?.lastname} {user?.othernames}</p>
-                          <span className='-mt-2 text-xs text-gray-300'>{user?.email}</span>
-                        </div>
-                      </td>
-                        <td className='py-6 text-sm'>
-                          {user?.departments?.map(department=> <span>{department.office}</span>)}
+                    return(<>
+                      {auth?.user?.role == "USER" && 
+                        <tr key={user.id} className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                          
+                          <td className='px-2 py-6 text-sm'>#{user.employeeId}</td>
+                          <td className='py-4 text-sm flex items-center gap-2'>
+                          <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
+                            <img className='w-4 h-4' src={usersi} alt="" />
+                          </div>
+                          <div>
+                            <p className='-mb-1 font-medium'>{user?.firstname} {user?.lastname} {user?.othernames}</p>
+                            <span className='-mt-2 text-xs text-gray-300'>{user?.email}</span>
+                          </div>
+                        </td>
+                          <td className='py-6 text-sm'>
+                            {user?.departments?.map(department=> <span>{department.office}</span>)}
+                            </td>
+                          <td className='py-6 text-sm'>{user?.phone}</td>
+                          <td className='py-4 text-sm'>
+                            <span 
+                             className={`${user.status === "ACTIVE" && 'bg-green-100 text-green-500 before:bg-green-500'}
+                             ${user.status === "DISABLED" && 'bg-gray-100 text-gray-500 before:bg-gray-500'} 
+                             rounded-lg relative text-sm py-2 px-6  before:block before:absolute before:w-2 before:h-2  before:rounded-full before:left-2 before:top-[.9rem]`}> {user.status} </span> 
                           </td>
-                        <td className='py-6 text-sm'>{user?.phone}</td>
-                        <td className='py-4 text-sm'><span className='rounded-lg relative text-sm py-2 px-6 bg-green-100 text-green-500 before:block before:absolute before:w-2 before:h-2 before:bg-green-500 before:rounded-full before:left-2 before:top-[.9rem]'> {user.status} </span> </td>
-                      </tr>
+                        </tr>
+                      } 
+                      {auth?.user?.role == "ADMIN" && 
+                        <tr key={user.id} onClick={()=> user.role !=="SUPERADMIN" && navigate(`./${user.id}`)} className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                          
+                          <td className='px-2 py-6 text-sm'>#{user.employeeId}</td>
+                          <td className='py-4 text-sm flex items-center gap-2'>
+                          <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
+                            <img className='w-4 h-4' src={usersi} alt="" />
+                          </div>
+                          <div>
+                            <p className='-mb-1 font-medium'>{user?.firstname} {user?.lastname} {user?.othernames}</p>
+                            <span className='-mt-2 text-xs text-gray-300'>{user?.email}</span>
+                          </div>
+                        </td>
+                          <td className='py-6 text-sm'>
+                            {user?.departments?.map(department=> <span>{department.office}</span>)}
+                            </td>
+                          <td className='py-6 text-sm'>{user?.phone}</td>
+                          <td className='py-4 text-sm'>
+                            <span 
+                             className={`${user.status === "ACTIVE" && 'bg-green-100 text-green-500 before:bg-green-500'}
+                             ${user.status === "DISABLED" && 'bg-gray-100 text-gray-500 before:bg-gray-500'} 
+                             rounded-lg relative text-sm py-2 px-6  before:block before:absolute before:w-2 before:h-2  before:rounded-full before:left-2 before:top-[.9rem]`}> {user.status} </span> 
+                          </td>
+                        </tr>
+                      } 
+                      {auth?.user?.role == "SUPERADMIN" && 
+                        <tr key={user.id} onClick={()=>navigate(`./${user.id}`)} className='py-6 border-b border-gray-100 cursor-pointer hover:bg-gray-100'>
+                          
+                          <td className='px-2 py-6 text-sm'>#{user.employeeId}</td>
+                          <td className='py-4 text-sm flex items-center gap-2'>
+                          <div className='p-2 border border-gray-200 rounded-full overflow-hidden'>
+                            <img className='w-4 h-4' src={usersi} alt="" />
+                          </div>
+                          <div>
+                            <p className='-mb-1 font-medium'>{user?.firstname} {user?.lastname} {user?.othernames}</p>
+                            <span className='-mt-2 text-xs text-gray-300'>{user?.email}</span>
+                          </div>
+                        </td>
+                          <td className='py-6 text-sm'>
+                            {user?.departments?.map(department=> <span>{department.office}</span>)}
+                            </td>
+                          <td className='py-6 text-sm'>{user?.phone}</td>
+                          <td className='py-4 text-sm'>
+                            <span 
+                             className={`${user.status === "ACTIVE" && 'bg-green-100 text-green-500 before:bg-green-500'}
+                             ${user.status === "DISABLED" && 'bg-yellow-100 text-gray-500 before:bg-yellow-500'} 
+                             rounded-lg relative text-sm py-2 px-6  before:block before:absolute before:w-2 before:h-2  before:rounded-full before:left-2 before:top-[.9rem]`}> {user.status} </span> 
+                          </td>
+                        </tr>
+                      } 
+                      </>
                     )
                   })}
                   </tbody>
@@ -197,7 +258,7 @@ function Users() {
         </div>
         <div className={`${showModal && 'active'} modal `}>
           <div className='bg-white w-[400px] md:w-[700px] rounded-lg overflow-hidden'>
-            <div className='flex items-center justify-between bg-black px-4 py-4'>
+            <div className='flex items-center justify-between bg-blue-500 px-4 py-4'>
               <h5 className='text-white text-xl m-0'>Add User</h5>
               <button onClick={handleShowModal} className='p-1 '>
                 <img className='w-4 h-4 bg-white' src={close} alt="" />
@@ -312,7 +373,7 @@ function Users() {
                   value={confirmPassword}
                   onChange={e=>{setConfirmPassword(e.target.value)}}/>
               </div>
-              <button className='w-full bg-gray-500 text-white rounded-lg py-4 hover:bg-black'> Add User </button>
+              <button className='w-full bg-blue-300 text-white rounded-lg py-4 hover:bg-blue-500'> Add User </button>
             </form>
           </div>
         </div>
