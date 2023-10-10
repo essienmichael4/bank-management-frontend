@@ -244,7 +244,9 @@ const SavingsAccount = () => {
           </div>
         </div>
         <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
-            <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>
+            <div className='image__bg w-full h-28 bg-gray-200 rounded-lg relative'>
+              <span className={`${account.status == "ACTIVE" && "bg-green-400"} ${account.status == "DISABLED" && "bg-yellow-400"} ${account.status == "CLOSED" && "bg-red-400"} rounded-lg text-white absolute right-2 top-2 py-2 px-4`}>{account.status}</span>
+            </div>
             <div className='pt-4 px-4'>
                 <div className='absolute w-28 h-28 rounded-full bg-white border border-gray-200 top-2 left-4'></div>
                 <h3>{account?.firstname} {account?.lastname} {account?.othernames}</h3>

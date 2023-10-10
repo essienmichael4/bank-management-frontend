@@ -218,7 +218,9 @@ const LoansAccount = () => {
             </div>
         </div>
         <div className='bg-white my-4 border border-gray-300 rounded-lg h-full relative'>
-          <div className='image__bg w-full h-28 bg-gray-200 rounded-lg'></div>
+          <div className='image__bg w-full h-28 bg-gray-200 rounded-lg relative'>
+          <span className={`${account.loanDetail?.state == "GRANTED" && "bg-green-400"} ${account.loanDetail?.state == "NEW" && "bg-yellow-400"} ${account.loanDetail?.state == "CLOSED" && "bg-red-400"} ${account.loanDetail?.state == "UNGRANTED" && "bg-gray-400"} rounded-lg text-white absolute right-2 top-2 py-2 px-4`}>{account.loanDetail?.state}</span>
+          </div>
             <div className='pt-8 px-4'>
                 <div className='absolute w-28 h-28 rounded-full bg-white border border-gray-200 top-2 left-4'></div>
                 <h3>{account.firstname} {account.lastname} {account.othernames}</h3>

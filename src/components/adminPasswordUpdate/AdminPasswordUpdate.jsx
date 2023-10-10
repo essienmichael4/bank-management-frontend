@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { toast } from 'react-toastify';
 import './adminPasswordUpdate.css'
 import close from '../../assets/close.svg'
@@ -21,13 +21,11 @@ const AdminPasswordUpdate = (props) => {
         if(user.password !== user.repeatPassword){
             toast.error("Passwords do not match")
         }
-        console.log(user);
 
         try{
             const response = await axiosPrivateNew.post(`/user/change-password`, JSON.stringify(user))
             toast.success(response.data.message)
           }catch(err){
-            console.log(err);
             if(err.response){
               toast.error(err.response.data.error)
             }

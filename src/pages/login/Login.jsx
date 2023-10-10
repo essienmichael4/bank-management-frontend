@@ -23,7 +23,7 @@ function Login() {
     e.preventDefault()
     try{
       const response = await axios.post("/auth/login",
-       JSON.stringify({email: username, password}),
+       JSON.stringify({email:username, password}),
        {
         headers: {'Content-Type': 'application/json'}
        }
@@ -48,7 +48,7 @@ function Login() {
   }
 
   return (
-    <div className='wrapper  mx-auto bg-red-300 flex flex-col-reverse w-full h-full lg:flex-row'>
+    <div className='wrapper  mx-auto flex flex-col-reverse w-full h-full lg:flex-row'>
         <div className='content absolute p-4 rounded-t-3xl w-full bg-white b-0 
         md:px-20 md:h-1/2 md:flex md:items-center md:justify-center lg:w-1/2 lg:relative
         lg:h-full lg:rounded-t-none'>
