@@ -196,9 +196,11 @@ const LoansAccount = () => {
               </button>
             <h4 className='m-0 font-bold '>Loan Account</h4>
 
-            <div className='flex items-center gap-2 '>
-              <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
-            </div>
+            {account?.status !== "PAID" && 
+              <div className='flex items-center gap-2 '>
+                <button className='bg-green-500 text-sm lg:text-light text-white p-1 rounded 2xl:p-2 2xl:rounded-lg' onClick={handleShowTransaction}>Make Transaction</button>
+              </div>
+            }
           </div>
           <div className='flex gap-2'>
             {account?.loanDetail?.state === "GRANTED" && account?.status === "NOT_LOANED" && 
